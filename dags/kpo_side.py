@@ -20,15 +20,19 @@ def example_kubernetes_pod():
 
     # Define the KPO with the sidecar container
     kpo_with_sidecar = KubernetesPodOperator(
-        namespace='default',
         image='alpine:latest',
         name='kpo-with-sidecar',
-        task_id='task-with-sidecar',
         executor_config={
             "pod_override": k8s.V1Pod(
                 spec=k8s.V1PodSpec(containers=[sidecar_container])
             )
         },
+        cmds=['sleep', '300']
+    )
+
+    kpo_without_sidecar = KubernetesPodOperator(
+        image='alpine:latest',
+        name='kpo-without-sidecar',
         cmds=['sleep', '300']
     )
 
