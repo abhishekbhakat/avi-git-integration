@@ -34,7 +34,13 @@ while True:
     tally_active_processes()
     time.sleep(5)
 """],
-    )   
+    )
+
+    main_container = k8s.V1Container(
+        name="main-container",
+        image="python:alpine3.9",
+        cmds=['pip', 'install', 'apache-airflow']
+    )
 
     # Define the KPO with the sidecar container
     kpo_with_sidecar = KubernetesPodOperator(
@@ -44,11 +50,10 @@ while True:
         executor_config={
             "pod_override": k8s.V1Pod(
                 spec=k8s.V1PodSpec(
-                    containers=[sidecar_container]
+                    containers=[sidecar_container, main_container]
                     )
             )
-        },
-        cmds=['pip', 'install', 'apache-airflow']
+        }
     )
 
     kpo_without_sidecar = KubernetesPodOperator(
