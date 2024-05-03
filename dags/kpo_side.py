@@ -17,21 +17,8 @@ def example_kubernetes_pod():
         image='python:alpine3.9',
         command=["python", "-c"],
     args=["""
-import subprocess
-import time
-
-def tally_active_processes():
-    try:
-        output = subprocess.check_output(['ps', '-auxfh'])
-        output_str = output.decode('utf-8')
-        lines = output_str.strip().split('\\n')
-        active_processes = len(lines) - 1
-        print(f"Number of active processes: {active_processes}")
-    except subprocess.CalledProcessError as e:
-        print(f"Error executing 'ps' command: {e}")
-
 while True:
-    tally_active_processes()
+    print("Hello from the sidecar!")
     time.sleep(5)
 """],
     )
