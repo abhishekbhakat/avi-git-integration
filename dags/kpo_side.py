@@ -14,7 +14,7 @@ def example_kubernetes_pod():
     # Define the sidecar container
     sidecar_container = k8s.V1Container(
         name='sidecar-container',
-        image='alpine:latest',
+        image='python:alpine3.9',
         # Define any additional configurations for your sidecar container here
     )   
 
