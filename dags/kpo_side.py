@@ -20,6 +20,7 @@ def example_kubernetes_pod():
 
     # Define the KPO with the sidecar container
     kpo_with_sidecar = KubernetesPodOperator(
+        task_id='kpo_with_sidecar',
         image='alpine:latest',
         name='kpo-with-sidecar',
         executor_config={
@@ -31,6 +32,7 @@ def example_kubernetes_pod():
     )
 
     kpo_without_sidecar = KubernetesPodOperator(
+        task_id='kpo_without_sidecar',
         image='alpine:latest',
         name='kpo-without-sidecar',
         cmds=['sleep', '300']
