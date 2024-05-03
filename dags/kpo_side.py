@@ -31,3 +31,5 @@ def example_kubernetes_pod():
         },
         cmds=['sleep', '300']
     )
+
+dag_obj = example_kubernetes_pod()
