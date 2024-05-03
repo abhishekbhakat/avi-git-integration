@@ -47,13 +47,11 @@ while True:
         task_id='kpo_with_sidecar',
         image='python:alpine3.9',
         name='kpo-with-sidecar',
-        executor_config={
-            "pod_override": k8s.V1Pod(
+        full_pod_spec= k8s.V1Pod(
                 spec=k8s.V1PodSpec(
                     containers=[sidecar_container, main_container]
                     )
             )
-        }
     )
 
     kpo_without_sidecar = KubernetesPodOperator(
