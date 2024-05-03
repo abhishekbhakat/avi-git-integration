@@ -1,13 +1,13 @@
 from airflow.decorators import dag, task
 from airflow.providers.cncf.kubernetes.operators.kubernetes_pod import KubernetesPodOperator
-from airflow.utils.dates import days_ago
+from pendulum import datetime
 from kubernetes.client import models as k8s
 
 # Define your DAG
 @dag(
     'example_kubernetes_pod',
-    schedule_interval=None,
-    start_date=days_ago(2),
+    schedule=None,
+    start_date=datetime(2024,5,1),
     tags=['example'],
 )
 def example_kubernetes_pod():
