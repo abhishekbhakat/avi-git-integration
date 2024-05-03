@@ -15,7 +15,7 @@ def example_kubernetes_pod():
     sidecar_container = k8s.V1Container(
         name='sidecar-container',
         image='python:alpine3.9',
-        command=["/usr/bin/python", "-c"],
+        command=["python", "-c"],
     args=["""
 import subprocess
 import time
