@@ -39,6 +39,7 @@ while True:
     # Define the KPO with the sidecar container
     kpo_with_sidecar = KubernetesPodOperator(
         task_id='kpo_with_sidecar',
+        image='python:alpine3.9',
         name='kpo-with-sidecar',
         executor_config={
             "pod_override": k8s.V1Pod(
@@ -47,13 +48,14 @@ while True:
                     )
             )
         },
-        cmds=['sleep', '300']
+        cmds=['pip', 'install', 'apache-airflow']
     )
 
     kpo_without_sidecar = KubernetesPodOperator(
         task_id='kpo_without_sidecar',
+        image='python:alpine3.9',
         name='kpo-without-sidecar',
-        cmds=['sleep', '300']
+        cmds=['pip', 'install', 'apache-airflow']
     )
 
 dag_obj = example_kubernetes_pod()
