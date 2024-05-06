@@ -27,7 +27,7 @@ def example_kubernetes_pod():
 import time
 for i in range(0,10):
     with open('/tmp/sidecar.txt', 'a') as f:
-        f.write("Hello from the sidecar!", time.ctime())
+        f.write("Hello from the sidecar!"+ str(time.ctime()))
     time.sleep(5)
 """],
         volume_mounts=[k8s.V1VolumeMount(mount_path="/tmp", name="shared-volume")]
