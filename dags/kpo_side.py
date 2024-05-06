@@ -36,7 +36,7 @@ while True:
         name='kpo-with-sidecar',
         full_pod_spec= k8s.V1Pod(
                 spec=k8s.V1PodSpec(
-                    containers=[sidecar_container, main_container]
+                    containers=[main_container, sidecar_container]
                     )
             )
     )
