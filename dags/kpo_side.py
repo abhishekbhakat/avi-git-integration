@@ -41,11 +41,14 @@ for i in range(0,10):
 import time
 content_from_sidecar = ""
 for i in range(0,20):
-    with open('/tmp/sidecar.txt', 'r') as f:
-        content = f.read()
-        change = content - content_from_sidecar
-        content_from_sidecar = content
-        print(content_from_sidecar)
+    try:
+        with open('/tmp/sidecar.txt', 'r') as f:
+            content = f.read()
+            change = content - content_from_sidecar
+            content_from_sidecar = content
+            print(content_from_sidecar)
+    except:
+        print("Maybe file doesn't exist. Checking in 5 seconds.")
     time.sleep(5)
 """],
         volume_mounts=[k8s.V1VolumeMount(mount_path="/tmp", name="shared-volume")]
