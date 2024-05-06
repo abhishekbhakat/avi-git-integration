@@ -20,14 +20,13 @@ def example_kubernetes_pod():
 import time
 for i in range(0,3):
     print("Hello from the sidecar!")
-    time.sleep(5)
 """],
     )
 
     main_container = k8s.V1Container(
         name="main-container",
         image="python:alpine3.9",
-        command=['pip', 'list']
+        command=['sleep', '10'],
     )
 
     # Define the KPO with the sidecar container
