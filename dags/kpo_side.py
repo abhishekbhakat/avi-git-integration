@@ -38,7 +38,7 @@ for i in range(0,10):
         args=["""
 import time
 content_from_sidecar = ""
-for i in range(0,20):
+for i in range(0,200):
     try:
         print("Opening file...")
         with open('/tmp/sidecar.txt', 'r') as f:
