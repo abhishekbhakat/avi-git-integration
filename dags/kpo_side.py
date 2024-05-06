@@ -14,7 +14,7 @@ def example_kubernetes_pod():
     # Define a volume shared between the main and sidecar containers
     shared_volume = k8s.V1Volume(
         name="shared-volume",
-        empty_dir=k8s.V1HostPathVolumeSource(
+        host_path=k8s.V1HostPathVolumeSource(
             path='/tmp'
         )
     )
