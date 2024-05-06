@@ -27,7 +27,7 @@ while True:
     main_container = k8s.V1Container(
         name="main-container",
         image="python:alpine3.9",
-        command=['pip', 'install', 'apache-airflow']
+        command=['pip', 'list']
     )
 
     # Define the KPO with the sidecar container
