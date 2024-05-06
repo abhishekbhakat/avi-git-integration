@@ -18,15 +18,16 @@ def example_kubernetes_pod():
         command=["python", "-c"],
         args=["""
 import time
-for i in range(0,3):
+for i in range(0,20):
     print("Hello from the sidecar!")
+    time.sleep(5)
 """],
     )
 
     main_container = k8s.V1Container(
         name="main-container",
         image="python:alpine3.9",
-        command=['sleep', '10'],
+        command=['sleep', '120'],
         volume_mounts=[k8s.V1VolumeMount(mount_path="/shared", name="shared-volume")]
     )
 
