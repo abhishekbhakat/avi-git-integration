@@ -18,7 +18,7 @@ def example_kubernetes_pod():
         command=["python", "-c"],
     args=["""
 import time
-while True:
+for i in range(0,3):
     print("Hello from the sidecar!")
     time.sleep(5)
 """],
