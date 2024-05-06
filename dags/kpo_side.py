@@ -17,6 +17,7 @@ def example_kubernetes_pod():
         image='python:alpine3.9',
         command=["python", "-c"],
     args=["""
+import time
 while True:
     print("Hello from the sidecar!")
     time.sleep(5)
