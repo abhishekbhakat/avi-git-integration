@@ -47,8 +47,9 @@ for i in range(0,20):
         change = content - content_from_sidecar
         content_from_sidecar = content
         print(content_from_sidecar)
-    except:
+    except Exception as e:
         print("Maybe file doesn't exist. Checking in 5 seconds.")
+        print("Error: " + str(e))
     time.sleep(5)
 """],
         volume_mounts=[k8s.V1VolumeMount(mount_path="/tmp", name="shared-volume")]
