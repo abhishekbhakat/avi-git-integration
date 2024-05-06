@@ -36,7 +36,18 @@ for i in range(0,10):
     main_container = k8s.V1Container(
         name="main-container",
         image="python:alpine3.9",
-        command=['sleep', '120'],
+        command=['python', '-c'],
+        args=["""
+import time
+content_from_sidecar = ""
+for i in range(0,20):
+    with open('/tmp/sidecar.txt', 'r') as f:
+        content = f.read()
+        change = content - content_from_sidecar
+        content_from_sidecar = content
+        print(content_from_sidecar)
+    time.sleep(5)
+"""],
         volume_mounts=[k8s.V1VolumeMount(mount_path="/tmp", name="shared-volume")]
     )
 
@@ -57,16 +68,7 @@ for i in range(0,10):
     kpo_without_sidecar = KubernetesPodOperator(
         task_id='kpo_without_sidecar',
         image='python:alpine3.9',
-        name='kpo-without-sidecar',
-        command=["python", "-c"],
-        args=["""
-import time
-for i in range(0,20):
-    with open('/tmp/sidecar.txt', 'r') as f:
-        content = f.read()
-        print(content)
-    time.sleep(5)
-"""],
+        name='kpo-without-sidecar'
     )
 
 dag_obj = example_kubernetes_pod()
