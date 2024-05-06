@@ -11,6 +11,13 @@ from kubernetes.client import models as k8s
     tags=['example'],
 )
 def example_kubernetes_pod():
+    # Define a volume shared between the main and sidecar containers
+    shared_volume = k8s.V1Volume(
+        name="shared-volume",
+        empty_dir=k8s.V1HostPathVolumeSource(
+            path='/tmp'
+        )
+    )
     # Define the sidecar container
     sidecar_container = k8s.V1Container(
         name='sidecar-container',
@@ -22,20 +29,16 @@ for i in range(0,20):
     print("Hello from the sidecar!")
     time.sleep(5)
 """],
+        volume_mounts=[k8s.V1VolumeMount(mount_path="/tmp", name="shared-volume")]
     )
 
     main_container = k8s.V1Container(
         name="main-container",
         image="python:alpine3.9",
         command=['sleep', '120'],
-        volume_mounts=[k8s.V1VolumeMount(mount_path="/shared", name="shared-volume")]
+        volume_mounts=[k8s.V1VolumeMount(mount_path="/tmp", name="shared-volume")]
     )
 
-    # Define a volume shared between the main and sidecar containers
-    shared_volume = k8s.V1Volume(
-        name="shared-volume",
-        empty_dir=k8s.V1EmptyDirVolumeSource()
-    )
 
     # Define the KPO with the sidecar container
     kpo_with_sidecar = KubernetesPodOperator(
