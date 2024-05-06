@@ -40,11 +40,13 @@ import time
 content_from_sidecar = ""
 for i in range(0,20):
     try:
+        print("Opening file...")
         with open('/tmp/sidecar.txt', 'r') as f:
             content = f.read()
-            change = content - content_from_sidecar
-            content_from_sidecar = content
-            print(content_from_sidecar)
+        print("File opened.")
+        change = content - content_from_sidecar
+        content_from_sidecar = content
+        print(content_from_sidecar)
     except:
         print("Maybe file doesn't exist. Checking in 5 seconds.")
     time.sleep(5)
