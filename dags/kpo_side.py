@@ -44,9 +44,8 @@ for i in range(0,20):
         with open('/tmp/sidecar.txt', 'r') as f:
             content = f.read()
         print("File opened.")
-        change = content - content_from_sidecar
+        change = content.replace(content_from_sidecar, "")
         content_from_sidecar = content
-        print(content_from_sidecar)
     except Exception as e:
         print("Maybe file doesn't exist. Checking in 5 seconds.")
         print("Error: " + str(e))
