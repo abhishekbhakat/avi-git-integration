@@ -25,8 +25,9 @@ def example_kubernetes_pod():
         command=["python", "-c"],
         args=["""
 import time
-for i in range(0,20):
-    print("Hello from the sidecar!")
+for i in range(0,10):
+    with open('/tmp/sidecar.txt', 'a') as f:
+        f.write("Hello from the sidecar!", time.ctime())
     time.sleep(5)
 """],
         volume_mounts=[k8s.V1VolumeMount(mount_path="/tmp", name="shared-volume")]
@@ -57,7 +58,15 @@ for i in range(0,20):
         task_id='kpo_without_sidecar',
         image='python:alpine3.9',
         name='kpo-without-sidecar',
-        cmds=['pip', 'install', 'apache-airflow']
+        command=["python", "-c"],
+        args=["""
+import time
+for i in range(0,20):
+    with open('/tmp/sidecar.txt', 'r') as f:
+        content = f.read()
+        print(content)
+    time.sleep(5)
+"""],
     )
 
 dag_obj = example_kubernetes_pod()
