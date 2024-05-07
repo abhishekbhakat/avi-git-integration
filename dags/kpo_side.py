@@ -1,4 +1,4 @@
-from airflow.decorators import dag, task
+from airflow.decorators import dag
 from airflow.providers.cncf.kubernetes.operators.kubernetes_pod import KubernetesPodOperator
 from pendulum import datetime
 from kubernetes.client import models as k8s
