@@ -51,7 +51,7 @@ def dummy_child_dag():
         task_id='task_1',
         # execution_date_fn=lambda dt: handle_dst_transition(dt, local_tz),
         execution_date_fn=get_most_recent_dag_run_last_24_hours,
-        execution_delta=timedelta(days=1),
+        # execution_delta=timedelta(days=1),
     )
 
 dag_obj = dummy_child_dag()
