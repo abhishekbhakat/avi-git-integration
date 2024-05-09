@@ -1,11 +1,10 @@
 from airflow.decorators import dag, task
 from datetime import datetime, timedelta
-import pendulum
-from airflow.utils.timezone import make_naive, make_aware
+# import pendulum
+# from airflow.utils.timezone import make_naive, make_aware
 from airflow.sensors.external_task import ExternalTaskSensor
 
 from airflow.models import DagRun
-from airflow.utils.db import provide_session
 
 # local_tz = pendulum.timezone("Pacific/Auckland")
 def get_most_recent_dag_run_last_24_hours(execution_date, dag_id="your_external_dag_id"):
