@@ -12,8 +12,7 @@ def dummy_child_dag():
     task1 = ExternalTaskSensor(
         external_dag_id='dummy_parent_dag',
         external_task_id='task_1',
-        task_id='task_1',
-        execution_delta=timedelta(days=-1)
+        task_id='task_1'
     )
 
 dag_obj = dummy_child_dag()
