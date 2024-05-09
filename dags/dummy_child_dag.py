@@ -15,8 +15,8 @@ def get_most_recent_dag_run_last_24_hours(execution_date, dag_id="your_external_
     # Find the most recent DAG run for the specified DAG ID within the last 24 hours
     recent_dag_runs = DagRun.find(
         dag_id=dag_id,
-        end_date=execution_date,
-        start_date=twenty_four_hours_ago,
+        execution_end_date=execution_date,
+        execution_start_date=twenty_four_hours_ago,
         state='success',  # Assuming you want to find successful DAG runs; remove if not needed
         no_backfills=True
     )
