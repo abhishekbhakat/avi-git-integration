@@ -13,8 +13,7 @@ def dummy_child_dag():
         external_dag_id='dummy_parent_dag',
         external_task_id='task_1',
         task_id='task_1',
-        mode='reschedule',
-        execution_delta=timedelta(days=1)
+        execution_delta=timedelta(days=-1)
     )
 
 dag_obj = dummy_child_dag()
