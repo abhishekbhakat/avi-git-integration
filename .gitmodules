@@ -1,0 +1,3 @@
+[submodule "plugins/submodules"]
+	path = plugins/submodules
+	url = https://github.com/abhishekbhakat/my-airflow-plugin
