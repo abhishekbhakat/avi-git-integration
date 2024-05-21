@@ -1,0 +1,24 @@
+dags:
+  - dag_id: dag_file_1
+    schedule: "6 00 * * *"
+    dag_template: SnowflakeToGCS
+    tags: ["snowflake", "gcs"]
+    template_config:
+      snowflake_conn_id: snowflake_conn
+      gcs_conn_id: google_default
+
+  - dag_id: dag_file_2
+    schedule: "12 00 * * *"
+    dag_template: SnowflakeToGCS
+    tags: ["snowflake", "gcs"]
+    template_config:
+      snowflake_conn_id: snowflake_conn
+      gcs_conn_id: google_default
+
+  - dag_id: dag_file_3
+    schedule: "18 00 * * *"
+    dag_template: PostgreSQLToGCS
+    tags: ["postgresql", "gcs"]
+    template_config:
+      postgres_conn_id: postgresql_conn
+      gcs_conn_id: google_default
