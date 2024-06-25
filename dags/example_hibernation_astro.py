@@ -73,7 +73,8 @@ Requires the following environment variables to be set:
 
 This DAG will check if any DAGs ran in previous THRESHOLD_TIME_IN_MINS minutes. 
 If no DAGs ran, it will hibernate the deployment, else will poll every 15 minutes.
-"""
+""",
+        tags=['example']
         )
 def example_hibernation_dag():
     @task.branch(task_display_name="Check Deployment Mode 🧑🏻‍💻")
