@@ -4,7 +4,6 @@ from requests import request
 from airflow.models import DagRun
 from airflow.decorators import dag, task
 from airflow.operators.empty import EmptyOperator
-from airflow.providers.http.hooks.http import 
 from airflow.configuration import conf
 from urllib.parse import urlparse
 import os
