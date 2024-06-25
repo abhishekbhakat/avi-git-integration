@@ -5,18 +5,19 @@ from airflow.models import DagRun
 from airflow.decorators import dag, task
 from airflow.operators.empty import EmptyOperator
 from airflow.configuration import conf
+from urllib.parse import urlparse
 import os
 
 DEPLOYMENT_ID = conf.get("astronomer", "casbin_deployment")
+ORGANIZATION_ID = urlparse(conf.get("webserver", "base_url")).netloc.split(".")[0]
+
 
 def hibernate_deployments():
     """
     Hibernates the deployment
     """
-    org_id = os.getenv("ORG_ID")
-    api_token = os.getenv("API_TOKEN")
-
-    url = f"https://api.astronomer.io/platform/v1beta1/organizations/{org_id}/deployments/{DEPLOYMENT_ID}/hibernation-override"
+    api_token = os.getenv("ASTRO_API_TOKEN")
+    url = f"https://api.astronomer.io/platform/v1beta1/organizations/{ORGANIZATION_ID}/deployments/{DEPLOYMENT_ID}/hibernation-override"
     response = request(
         url=url,
         method="POST",
@@ -37,9 +38,8 @@ def get_deployment_mode():
     """
     Get the deployment mode
     """
-    org_id = os.getenv("ORG_ID")
     api_token = os.getenv("API_TOKEN")
-    url = f"https://api.astronomer.io/platform/v1beta1/organizations/{org_id}/deployments/{DEPLOYMENT_ID}"
+    url = f"https://api.astronomer.io/platform/v1beta1/organizations/{ORGANIZATION_ID}/deployments/{DEPLOYMENT_ID}"
     response = request(
         url=url,
         method="GET",
@@ -67,10 +67,8 @@ default_args = {
         doc_md="""
 DAG to hibernate deployment based on the threshold interval and deployment mode.
 Requires the following environment variables to be set:
-- ORG_ID: Organization ID
-- DEPLOYMENT_ID: Deployment ID
 - API_TOKEN: API Token
-- THRESHOLD_TIME_IN_MINS: Threshold time in minutes
+- THRESHOLD_TIME_IN_MINS: Threshold time in minutes (default: 15)
 
 This DAG will check if any DAGs ran in previous THRESHOLD_TIME_IN_MINS minutes. 
 If no DAGs ran, it will hibernate the deployment, else will poll every 15 minutes.
@@ -80,9 +78,6 @@ If no DAGs ran, it will hibernate the deployment, else will poll every 15 minute
 def example_hibernation_dag():
     @task.branch(task_display_name="Check Deployment Mode 🧑🏻‍💻")
     def check_deployment_type(**context):
-        # print remote log path
-        print(f"Remote log path: {conf.get('logging', 'remote_base_log_folder')}")
-        print(f"Deployment ID: {DEPLOYMENT_ID}")
         is_development = get_deployment_mode()
         print(f"Development_mode: {is_development}")
         if is_development:
