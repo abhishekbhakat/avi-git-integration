@@ -4,6 +4,7 @@ from requests import request
 from airflow.models import DagRun
 from airflow.decorators import dag, task
 from airflow.operators.empty import EmptyOperator
+from airflow.configuration import conf
 import os
 
 def hibernate_deployments():
@@ -78,7 +79,9 @@ If no DAGs ran, it will hibernate the deployment, else will poll every 15 minute
         )
 def example_hibernation_dag():
     @task.branch(task_display_name="Check Deployment Mode 🧑🏻‍💻")
-    def check_deployment_type():
+    def check_deployment_type(**context):
+        # print remote log path
+        print(f"Remote log path: {conf.get('core', 'remote_log_base')}")
         is_development = get_deployment_mode()
         print(f"Development_mode: {is_development}")
         if is_development:
