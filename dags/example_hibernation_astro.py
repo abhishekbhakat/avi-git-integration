@@ -51,7 +51,7 @@ def example_hibernation_dag():
             },
             timeout=300,
         )
-        if response.status_code != 200:
+        if response.ok:
             raise Exception("Failed to fetch deployment details")
         is_development = response.json().get("isDevelopmentMode")
         print(f"Development_mode: {is_development}")
@@ -91,7 +91,7 @@ def example_hibernation_dag():
             timeout=300,
         )
         print(response.status_code)
-        if response.status_code == 200:
+        if response.ok:
             return response.json()
         else:
             raise Exception("Failed to hibernate deployment")
