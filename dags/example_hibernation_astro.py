@@ -6,7 +6,7 @@ from airflow.decorators import dag, task
 from airflow.operators.empty import EmptyOperator
 from airflow.configuration import conf
 from urllib.parse import urlparse
-import os
+import os, json
 
 DEPLOYMENT_ID = conf.get("astronomer", "casbin_deployment")
 ORGANIZATION_ID = urlparse(conf.get("webserver", "base_url")).netloc.split(".")[0]
@@ -50,6 +50,7 @@ def example_hibernation_dag():
             },
             timeout=300,
         )
+        print("Headers: ", json.dumps(response.headers, indent=4))
         if response.ok:
             raise Exception("Failed to fetch deployment details")
         print("Response: ", response.text)
