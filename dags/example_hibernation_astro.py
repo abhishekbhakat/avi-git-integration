@@ -68,7 +68,7 @@ def example_hibernation_dag():
             execution_start_date=datetime.now(timezone.utc)
             - timedelta(minutes=int(threshold_time_in_mins)),
         )
-        dag_runs = list(set(dag_runs) + set(DagRun.find(state="running")) + set(DagRun.find(state="queued")))
+        dag_runs = list(set(dag_runs).union(set(DagRun.find(state="running"))).union(set(DagRun.find(state="queued"))))
         dag_runs = [dag_run for dag_run in dag_runs if dag_run.dag_id != "hibernation_dag"]
         print(f"DAGs ran below threshold limit {threshold_time_in_mins}: {len(dag_runs)}")
         if len(dag_runs) == 0:
