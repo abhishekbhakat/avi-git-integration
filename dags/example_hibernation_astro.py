@@ -67,7 +67,7 @@ def example_hibernation_dag():
         )
         dag_runs = [dag_run for dag_run in dag_runs if dag_run.dag_id != "hibernation_dag"]
         print(f"DAGs ran below threshold limit {threshold_time_in_mins}: {len(dag_runs)}")
-        if len(dag_runs) >= 0:
+        if len(dag_runs) == 0:
             return "hibernate_deployment"
         else:
             return "end"
