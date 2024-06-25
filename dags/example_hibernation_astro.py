@@ -10,7 +10,7 @@ import os, json
 
 DEPLOYMENT_ID = conf.get("astronomer", "casbin_deployment")
 ORGANIZATION_ID = urlparse(conf.get("webserver", "base_url")).netloc.split(".")[0]
-ASTRO_API_TOKEN = os.getenv("API_TOKEN")
+ASTRO_API_TOKEN = os.getenv("ASTRO_API_TOKEN")
 
 default_args = {
     "owner": "Avi",
