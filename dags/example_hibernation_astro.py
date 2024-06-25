@@ -52,6 +52,7 @@ def example_hibernation_dag():
         )
         if response.ok:
             raise Exception("Failed to fetch deployment details")
+        print("Response: ", response.text)
         is_development = response.json().get("isDevelopmentMode")
         print(f"Development_mode: {is_development}")
         if is_development:
