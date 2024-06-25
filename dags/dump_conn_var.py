@@ -6,7 +6,8 @@ from pendulum import datetime
     'dump_conn_var',
     start_date=datetime(2024, 4, 1),
     catchup=False,
-    schedule=None
+    schedule=None,
+    tags=["example"]
 )
 def dump_conn_var():
 
