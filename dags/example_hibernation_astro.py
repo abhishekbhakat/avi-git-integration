@@ -81,7 +81,7 @@ def example_hibernation_dag():
     @task.branch(task_display_name="Check Deployment Mode 🧑🏻‍💻")
     def check_deployment_type(**context):
         # print remote log path
-        print(f"Remote log path: {conf.get('core', 'remote_log_base')}")
+        print(f"Remote log path: {conf.get('logging', 'remote_base_log_folder')}")
         is_development = get_deployment_mode()
         print(f"Development_mode: {is_development}")
         if is_development:
