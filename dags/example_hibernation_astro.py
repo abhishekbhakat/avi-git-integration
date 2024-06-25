@@ -11,7 +11,7 @@ import os, json
 DEPLOYMENT_ID = conf.get("astronomer", "casbin_deployment")
 ORGANIZATION_ID = urlparse(conf.get("webserver", "base_url")).netloc.split(".")[0]
 ASTRO_API_TOKEN = os.getenv("ASTRO_API_TOKEN")
-
+DAG_NAME = "Auto_Hibernation_Dag"
 default_args = {
     "owner": "Avi",
     "retries": 0,
@@ -21,7 +21,7 @@ default_args = {
 
 
 @dag(
-    "Auto_Hibernation_Dag",
+    DAG_NAME,
     default_args=default_args,
     schedule_interval="*/15 * * * *",
     catchup=False,
@@ -69,7 +69,7 @@ def example_hibernation_dag():
             - timedelta(minutes=int(threshold_time_in_mins)),
         )
         dag_runs = list(set(dag_runs).union(set(DagRun.find(state="running"))).union(set(DagRun.find(state="queued"))))
-        dag_runs = [dag_run for dag_run in dag_runs if dag_run.dag_id != "hibernation_dag"]
+        dag_runs = [dag_run for dag_run in dag_runs if dag_run.dag_id != DAG_NAME]
         print(f"DAGs ran below threshold limit {threshold_time_in_mins}: {len(dag_runs)}")
         if len(dag_runs) == 0:
             return "hibernate_deployment"
