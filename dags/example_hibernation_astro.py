@@ -50,8 +50,8 @@ def example_hibernation_dag():
             },
             timeout=300,
         )
-        print("Headers: ", json.dumps(response.headers, indent=4))
-        if response.ok:
+        print("Authorization:", f"Bearer {ASTRO_API_TOKEN}")
+        if not response.ok:
             raise Exception("Failed to fetch deployment details")
         print("Response: ", response.text)
         is_development = response.json().get("isDevelopmentMode")
