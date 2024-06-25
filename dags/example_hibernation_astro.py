@@ -7,15 +7,16 @@ from airflow.operators.empty import EmptyOperator
 from airflow.configuration import conf
 import os
 
+DEPLOYMENT_ID = conf.get("astronomer", "casbin_deployment")
+
 def hibernate_deployments():
     """
     Hibernates the deployment
     """
     org_id = os.getenv("ORG_ID")
-    deployment_id = os.getenv("DEPLOYMENT_ID")
     api_token = os.getenv("API_TOKEN")
 
-    url = f"https://api.astronomer.io/platform/v1beta1/organizations/{org_id}/deployments/{deployment_id}/hibernation-override"
+    url = f"https://api.astronomer.io/platform/v1beta1/organizations/{org_id}/deployments/{DEPLOYMENT_ID}/hibernation-override"
     response = request(
         url=url,
         method="POST",
@@ -37,9 +38,8 @@ def get_deployment_mode():
     Get the deployment mode
     """
     org_id = os.getenv("ORG_ID")
-    deployment_id = os.getenv("DEPLOYMENT_ID")
     api_token = os.getenv("API_TOKEN")
-    url = f"https://api.astronomer.io/platform/v1beta1/organizations/{org_id}/deployments/{deployment_id}"
+    url = f"https://api.astronomer.io/platform/v1beta1/organizations/{org_id}/deployments/{DEPLOYMENT_ID}"
     response = request(
         url=url,
         method="GET",
@@ -82,6 +82,7 @@ def example_hibernation_dag():
     def check_deployment_type(**context):
         # print remote log path
         print(f"Remote log path: {conf.get('logging', 'remote_base_log_folder')}")
+        print(f"Deployment ID: {DEPLOYMENT_ID}")
         is_development = get_deployment_mode()
         print(f"Development_mode: {is_development}")
         if is_development:
