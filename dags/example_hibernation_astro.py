@@ -4,6 +4,7 @@ from requests import request
 from airflow.models import DagRun
 from airflow.decorators import dag, task
 from airflow.operators.empty import EmptyOperator
+from airflow.providers.http.hooks.http import 
 from airflow.configuration import conf
 from urllib.parse import urlparse
 import os
@@ -50,6 +51,8 @@ def example_hibernation_dag():
             },
             timeout=300,
         )
+        if response.status_code != 200:
+            raise Exception("Failed to fetch deployment details")
         is_development = response.json().get("isDevelopmentMode")
         print(f"Development_mode: {is_development}")
         if is_development:
@@ -88,8 +91,10 @@ def example_hibernation_dag():
             timeout=300,
         )
         print(response.status_code)
-        print(response.json())
-        return response.json()
+        if response.status_code == 200:
+            return response.json()
+        else:
+            raise Exception("Failed to hibernate deployment")
 
     end = EmptyOperator(
         task_id="end", trigger_rule="none_failed", task_display_name="End 🏁"
