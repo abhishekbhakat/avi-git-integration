@@ -35,6 +35,7 @@ Requires the following environment variables to be set:
 
 This DAG will check if any DAGs ran in previous THRESHOLD_TIME_IN_MINS minutes. 
 If no DAGs ran, it will hibernate the deployment, else will poll every 15 minutes.
+To keep the deployment awake, set CAFFEINATED to True in the environment variables.
 """,
     tags=["example"],
 )
@@ -56,7 +57,8 @@ def example_hibernation_dag():
         print("Response: ", response.text)
         is_development = response.json().get("isDevelopmentMode")
         print(f"Development_mode: {is_development}")
-        if is_development:
+        caffeinated = os.getenv("CAFFEINATED", "False")
+        if is_development and caffeinated.lower() == "true":
             return "check_hibernation_condition"
         else:
             return "end"
@@ -69,15 +71,6 @@ def example_hibernation_dag():
             execution_start_date=datetime.now(timezone.utc)
             - timedelta(minutes=int(threshold_time_in_mins)),
         )
-
-        # Find the latest 2 DagRuns and if both of them are for this DAG, then AirflowSkipException
-        last_dag_runs = DagRun.find()
-        print(f"Last DAG runs: {len(last_dag_runs)}")
-        if len(last_dag_runs) > 1:
-            last_2_dag_runs = sorted(last_dag_runs, key=lambda x: x.execution_date, reverse=True)[:2]
-            if last_2_dag_runs[0].dag_id == DAG_NAME and last_2_dag_runs[1].dag_id == DAG_NAME:
-                print("DAG ran twice in a row. Skipping...")
-                raise AirflowSkipException("Skipping as DAG ran twice in a row")
 
         dag_runs = list(set(dag_runs).union(set(DagRun.find(state="running"))).union(set(DagRun.find(state="queued"))))
         dag_runs = [dag_run for dag_run in dag_runs if dag_run.dag_id != DAG_NAME]
