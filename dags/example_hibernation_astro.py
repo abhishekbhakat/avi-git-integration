@@ -72,9 +72,11 @@ def example_hibernation_dag():
 
         # Find the latest 2 DagRuns and if both of them are for this DAG, then AirflowSkipException
         last_dag_runs = DagRun.find()
+        print(f"Last DAG runs: {len(last_dag_runs)}")
         if len(last_dag_runs) > 1:
             last_2_dag_runs = sorted(last_dag_runs, key=lambda x: x.execution_date, reverse=True)[:2]
             if last_2_dag_runs[0].dag_id == DAG_NAME and last_2_dag_runs[1].dag_id == DAG_NAME:
+                print("DAG ran twice in a row. Skipping...")
                 raise AirflowSkipException("Skipping as DAG ran twice in a row")
 
         dag_runs = list(set(dag_runs).union(set(DagRun.find(state="running"))).union(set(DagRun.find(state="queued"))))
