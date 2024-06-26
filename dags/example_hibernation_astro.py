@@ -58,7 +58,10 @@ def example_hibernation_dag():
         is_development = response.json().get("isDevelopmentMode")
         print(f"Development_mode: {is_development}")
         caffeinated = os.getenv("CAFFEINATED", "False")
-        if is_development and caffeinated.lower() == "true":
+        if caffeinated == "True":
+            print("Deployment is caffeinated")
+            return "end"
+        elif is_development:
             return "check_hibernation_condition"
         else:
             return "end"
