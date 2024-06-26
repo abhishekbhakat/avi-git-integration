@@ -4,6 +4,7 @@ from requests import request
 from airflow.models import DagRun
 from airflow.decorators import dag, task
 from airflow.operators.empty import EmptyOperator
+from airflow.exceptions import AirflowSkipException
 from airflow.configuration import conf
 from urllib.parse import urlparse
 import os, json
@@ -68,6 +69,14 @@ def example_hibernation_dag():
             execution_start_date=datetime.now(timezone.utc)
             - timedelta(minutes=int(threshold_time_in_mins)),
         )
+
+        # Find the latest 2 DagRuns and if both of them are for this DAG, then AirflowSkipException
+        last_dag_runs = DagRun.find()
+        if len(last_dag_runs) > 1:
+            last_2_dag_runs = sorted(last_dag_runs, key=lambda x: x.execution_date, reverse=True)[:2]
+            if last_2_dag_runs[0].dag_id == DAG_NAME and last_2_dag_runs[1].dag_id == DAG_NAME:
+                raise AirflowSkipException("Skipping as DAG ran twice in a row")
+
         dag_runs = list(set(dag_runs).union(set(DagRun.find(state="running"))).union(set(DagRun.find(state="queued"))))
         dag_runs = [dag_run for dag_run in dag_runs if dag_run.dag_id != DAG_NAME]
         print(f"DAGs ran below threshold limit {threshold_time_in_mins}: {len(dag_runs)}")
