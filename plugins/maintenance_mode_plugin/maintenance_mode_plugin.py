@@ -6,6 +6,7 @@ from airflow.models import Variable
 from flask import g
 import os
 import json
+from datetime import datetime, timezone
 
 current_dir = os.path.dirname(os.path.abspath(__file__))
 template_folder = os.path.join(current_dir, "templates")
@@ -36,8 +37,8 @@ class MaintenanceModeView(AppBuilderBaseView):
     def set_maintenance(self):
         data = request.json
         maintenance_data = {
-            "start_time": data.get("start_time"),
-            "end_time": data.get("end_time"),
+            "start_time": datetime.fromisoformat(data.get("start_time")).astimezone(timezone.utc).isoformat(),
+            "end_time": datetime.fromisoformat(data.get("end_time")).astimezone(timezone.utc).isoformat(),
             "task_handling": data.get("task_handling")
         }
         

@@ -10,3 +10,6 @@ dependencies = ["apache-airflow>=2.6"]
 
 [project.entry-points.'airflow.plugins']
 maintenance_mode_plugin = "maintenance_mode_plugin:MaintenanceModePlugin"
+
+[project.entry-points.'airflow.policy']
+maintenance_mode_policy = "maintenance_mode_plugin.policy:task_policy"

@@ -2,7 +2,7 @@ from airflow.policies import hookimpl
 from airflow.models import Variable
 from airflow.exceptions import AirflowSkipException, AirflowFailException
 import json
-from datetime import datetime
+from datetime import datetime, timezone
 
 @hookimpl
 def task_policy(task):
@@ -10,7 +10,7 @@ def task_policy(task):
     if maintenance_data:
         start_time = datetime.fromisoformat(maintenance_data['start_time'])
         end_time = datetime.fromisoformat(maintenance_data['end_time'])
-        current_time = datetime.now()
+        current_time = datetime.now(timezone.utc)
         
         if start_time <= current_time <= end_time:
             if maintenance_data['task_handling'] == 'skipped':
