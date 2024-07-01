@@ -2,7 +2,7 @@
 {% block content %}
 <div class="container">
   <h2>Set Maintenance Mode</h2>
-  <form method="post" class="form-horizontal">
+  <form id="maintenanceForm" class="form-horizontal">
     <div class="form-group">
       <label for="start_time" class="col-sm-2 control-label">Start Time:</label>
       <div class="col-sm-4">
@@ -35,4 +35,32 @@
     </div>
   </form>
 </div>
+
+<script>
+document.getElementById('maintenanceForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    
+    var formData = {
+        start_time: document.getElementById('start_time').value,
+        end_time: document.getElementById('end_time').value,
+        task_handling: document.getElementById('task_handling').value
+    };
+
+    fetch('/maintenancemodeview/api/set_maintenance', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData)
+    })
+    .then(response => response.json())
+    .then(data => {
+        alert(data.message);
+    })
+    .catch((error) => {
+        console.error('Error:', error);
+        alert('An error occurred while setting maintenance mode.');
+    });
+});
+</script>
 {% endblock %}

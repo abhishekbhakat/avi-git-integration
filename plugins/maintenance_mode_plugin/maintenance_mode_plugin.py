@@ -1,10 +1,11 @@
 from airflow.plugins_manager import AirflowPlugin
 from airflow.www.app import csrf
 from flask_appbuilder import expose, BaseView as AppBuilderBaseView
-from flask import Blueprint
+from flask import Blueprint, request, jsonify
+from airflow.models import Variable
 import os
+import json
 
-# Get the directory of the current file
 current_dir = os.path.dirname(os.path.abspath(__file__))
 template_folder = os.path.join(current_dir, "templates")
 
@@ -24,6 +25,20 @@ class MaintenanceModeView(AppBuilderBaseView):
     @csrf.exempt
     def maintenance(self):
         return self.render_template("maintenance_mode_form.html")
+
+    @expose("/api/set_maintenance", methods=["POST"])
+    @csrf.exempt
+    def set_maintenance(self):
+        data = request.json
+        maintenance_data = {
+            "start_time": data.get("start_time"),
+            "end_time": data.get("end_time"),
+            "task_handling": data.get("task_handling")
+        }
+        
+        Variable.set("maintenance_mode_plugin_var", json.dumps(maintenance_data))
+        
+        return jsonify({"status": "success", "message": "Maintenance mode set successfully"})
 
 v_appbuilder_view = MaintenanceModeView()
 v_appbuilder_package = {"name": "Maintenance Mode",
