@@ -2,6 +2,16 @@
 {% block content %}
 <div class="container">
   <h2>Set Maintenance Mode</h2>
+  
+  {% if maintenance_data %}
+  <div class="alert alert-info" role="alert">
+    <strong>Note:</strong> A maintenance window is currently set for 
+    {{ maintenance_data.start_time }} to {{ maintenance_data.end_time }} 
+    with task handling set to {{ maintenance_data.task_handling }}.
+    To override, set a new window below.
+  </div>
+  {% endif %}
+
   <form id="maintenanceForm" class="form-horizontal">
     <div class="form-group">
       <label for="start_time" class="col-sm-2 control-label">Start Time:</label>
@@ -22,7 +32,7 @@
       <div class="col-sm-4">
         <select id="task_handling" name="task_handling" class="form-control" required>
           <option value="failed">Failed</option>
-          <option value="skipped">Skipped</option>
+          <option value="skipped" selected>Skipped</option>
           <option value="success">Success</option>
         </select>
       </div>
