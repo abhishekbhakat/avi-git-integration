@@ -1,9 +1,8 @@
 from airflow.plugins_manager import AirflowPlugin
 from airflow.www.app import csrf
 from flask_appbuilder import expose, BaseView as AppBuilderBaseView
-from flask import Blueprint, request, jsonify, url_for
+from flask import Blueprint, request, jsonify, url_for, g
 from airflow.models import Variable
-from flask import g
 import os
 import json
 from datetime import datetime, timezone
