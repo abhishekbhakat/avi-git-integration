@@ -1,7 +1,7 @@
 from airflow.plugins_manager import AirflowPlugin
 from airflow.www.app import csrf
 from flask_appbuilder import expose, BaseView as AppBuilderBaseView
-from flask import Blueprint, request, jsonify, redirect, url_for
+from flask import Blueprint, request, jsonify, url_for
 from airflow.models import Variable
 from flask import g
 import os
@@ -25,7 +25,11 @@ class MaintenanceModeView(AppBuilderBaseView):
     @expose("/")
     @csrf.exempt
     def maintenance(self):
-        return self.render_template("maintenance_mode_form.html")
+        maintenance_data = json.loads(Variable.get("maintenance_mode_plugin_var", "{}"))
+        return self.render_template(
+            "maintenance_mode_form.html",
+            maintenance_data=maintenance_data
+        )
 
     @expose("/api/set_maintenance", methods=["POST"])
     @csrf.exempt
@@ -39,7 +43,11 @@ class MaintenanceModeView(AppBuilderBaseView):
         
         Variable.set("maintenance_mode_plugin_var", json.dumps(maintenance_data))
         
-        return jsonify({"status": "success", "message": "Maintenance mode set successfully", "redirect": url_for('/')})
+        return jsonify({
+            "status": "success", 
+            "message": "Maintenance mode set successfully", 
+            "redirect": url_for('Airflow.index')
+        })
 
 v_appbuilder_view = MaintenanceModeView()
 v_appbuilder_package = {"name": "Maintenance Mode",
@@ -51,7 +59,6 @@ class MaintenanceModePlugin(AirflowPlugin):
     flask_blueprints = [bp]
     appbuilder_views = [v_appbuilder_package]
 
-    # Add this method to inject maintenance mode data into all templates
     @staticmethod
     def before_request():
         maintenance_data = json.loads(Variable.get("maintenance_mode_plugin_var", "{}"))
