@@ -1,0 +1,16 @@
+<form method="post">
+    <label for="start_time">Start Time:</label>
+    <input type="datetime-local" id="start_time" name="start_time" required><br><br>
+    
+    <label for="end_time">End Time:</label>
+    <input type="datetime-local" id="end_time" name="end_time" required><br><br>
+    
+    <label for="task_handling">Task Handling:</label>
+    <select id="task_handling" name="task_handling" required>
+        <option value="failed">Failed</option>
+        <option value="skipped">Skipped</option>
+        <option value="success">Success</option>
+    </select><br><br>
+    
+    <input type="submit" value="Set Maintenance Mode">
+</form>
