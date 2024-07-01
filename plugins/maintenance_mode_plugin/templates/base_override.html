@@ -1,0 +1,11 @@
+{% extends 'appbuilder/baselayout.html' %}
+
+{% block body %}
+    {% if g.maintenance_mode %}
+        <div class="alert alert-warning" role="alert">
+            Maintenance mode is set from {{ g.maintenance_mode.start_time }} to {{ g.maintenance_mode.end_time }}. 
+            Tasks will be handled as: {{ g.maintenance_mode.task_handling }}.
+        </div>
+    {% endif %}
+    {{ super() }}
+{% endblock %}
