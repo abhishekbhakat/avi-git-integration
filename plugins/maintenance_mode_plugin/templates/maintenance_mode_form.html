@@ -1,16 +1,38 @@
-<form method="post">
-    <label for="start_time">Start Time:</label>
-    <input type="datetime-local" id="start_time" name="start_time" required><br><br>
+{% extends "appbuilder/base.html" %}
+{% block content %}
+<div class="container">
+  <h2>Set Maintenance Mode</h2>
+  <form method="post" class="form-horizontal">
+    <div class="form-group">
+      <label for="start_time" class="col-sm-2 control-label">Start Time:</label>
+      <div class="col-sm-4">
+        <input type="datetime-local" id="start_time" name="start_time" class="form-control" required>
+      </div>
+    </div>
     
-    <label for="end_time">End Time:</label>
-    <input type="datetime-local" id="end_time" name="end_time" required><br><br>
+    <div class="form-group">
+      <label for="end_time" class="col-sm-2 control-label">End Time:</label>
+      <div class="col-sm-4">
+        <input type="datetime-local" id="end_time" name="end_time" class="form-control" required>
+      </div>
+    </div>
     
-    <label for="task_handling">Task Handling:</label>
-    <select id="task_handling" name="task_handling" required>
-        <option value="failed">Failed</option>
-        <option value="skipped">Skipped</option>
-        <option value="success">Success</option>
-    </select><br><br>
+    <div class="form-group">
+      <label for="task_handling" class="col-sm-2 control-label">Task Handling:</label>
+      <div class="col-sm-4">
+        <select id="task_handling" name="task_handling" class="form-control" required>
+          <option value="failed">Failed</option>
+          <option value="skipped">Skipped</option>
+          <option value="success">Success</option>
+        </select>
+      </div>
+    </div>
     
-    <input type="submit" value="Set Maintenance Mode">
-</form>
+    <div class="form-group">
+      <div class="col-sm-offset-2 col-sm-4">
+        <button type="submit" class="btn btn-primary">Set Maintenance Mode</button>
+      </div>
+    </div>
+  </form>
+</div>
+{% endblock %}

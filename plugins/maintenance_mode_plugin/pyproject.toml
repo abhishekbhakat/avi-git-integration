@@ -9,4 +9,4 @@ version = "0.0.1"
 dependencies = ["apache-airflow>=2.6"]
 
 [project.entry-points.'airflow.plugins']
-maintenance_mode_plugin = "maintenance_mode.maintenance_mode_plugin:MaintenanceModePlugin"
+maintenance_mode_plugin = "maintenance_mode_plugin:MaintenanceModePlugin"
