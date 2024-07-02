@@ -77,7 +77,7 @@ document.getElementById('maintenanceForm').addEventListener('submit', function(e
         task_handling: document.getElementById('task_handling').value
     };
 
-    fetch('/maintenancemodeview/api/set_maintenance', {
+    fetch('{{ url_for("MaintenanceModeView.set_maintenance") }}', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -98,7 +98,7 @@ document.getElementById('maintenanceForm').addEventListener('submit', function(e
 document.getElementById('shutMaintenanceForm')?.addEventListener('submit', function(e) {
     e.preventDefault();
     
-    fetch('/maintenancemodeview/api/shut_maintenance', {
+    fetch('{{ url_for("MaintenanceModeView.shut_maintenance") }}', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
