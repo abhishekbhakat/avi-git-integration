@@ -40,7 +40,11 @@ def dag_policy(dag):
                         python_callable=maintenance_task_success,
                     )
                 
-                new_task.doc = "Task Overridden due to Maintenance Window"
+                if hasattr(task, 'doc') and isinstance(task.doc, property):
+                    new_task.doc_md = "Task Overridden due to Maintenance Window"
+                else:
+                    new_task.doc = "Task Overridden due to Maintenance Window"
+                
                 if hasattr(task, '_upstream_task_ids'):
                     new_task._upstream_task_ids = task._upstream_task_ids.copy()
                 if hasattr(task, '_downstream_task_ids'):
