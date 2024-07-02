@@ -24,24 +24,27 @@ def dag_policy(dag):
         
         if start_time <= current_time <= end_time:
             for task_id, task in dag.task_dict.copy().items():
-                if maintenance_data['task_handling'] == 'fail':
-                    task = PythonOperator(
-                        task_id=task.task_id,
-                        python_callable=maintenance_task_failed,
-                        provide_context=True,
-                    )
-                elif maintenance_data['task_handling'] == 'skip':
-                    task = PythonOperator(
-                        task_id=task.task_id,
+                if maintenance_data['task_handling'] == 'skipped':
+                    new_task = PythonOperator(
+                        task_id=task_id,
                         python_callable=maintenance_task_skipped,
-                        provide_context=True,
                     )
-                else:
-                    task = PythonOperator(
-                        task_id=task.task_id,
+                elif maintenance_data['task_handling'] == 'failed':
+                    new_task = PythonOperator(
+                        task_id=task_id,
+                        python_callable=maintenance_task_failed,
+                    )
+                elif maintenance_data['task_handling'] == 'success':
+                    new_task = PythonOperator(
+                        task_id=task_id,
                         python_callable=maintenance_task_success,
-                        provide_context=True,
                     )
-                task.doc = "Tasks Overridden due to Maintenance Window"
-                dag.task_dict[task_id] = task
-            
+                
+                new_task.doc = "Task Overridden due to Maintenance Window"
+                if hasattr(task, '_upstream_task_ids'):
+                    new_task._upstream_task_ids = task._upstream_task_ids.copy()
+                if hasattr(task, '_downstream_task_ids'):
+                    new_task._downstream_task_ids = task._downstream_task_ids.copy()
+
+                dag.task_dict[task_id] = new_task
+                dag.task_dict[task_id].dag = dag
