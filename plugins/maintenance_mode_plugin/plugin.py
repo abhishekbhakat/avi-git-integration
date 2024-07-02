@@ -25,7 +25,7 @@ class MaintenanceModeView(AppBuilderBaseView):
     @expose("/")
     @csrf.exempt
     def maintenance(self):
-        maintenance_data = Variable.get("maintenance_mode_plugin_var", deserialize_json=True)
+        maintenance_data = Variable.get("maintenance_mode_plugin_var", deserialize_json=True, default_var="")
         if maintenance_data:
             maintenance_data = json.loads(maintenance_data)
             maintenance_data['start_time'] = maintenance_data['start_time'].split('+')[0]
