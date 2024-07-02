@@ -1,14 +1,18 @@
 {% extends "appbuilder/base.html" %}
 {% block content %}
 <div class="container">
-  <h2>Set Maintenance Mode</h2>
+  <h2>Set Maintenance Window</h2>
   
-  {% if maintenance_data %}
   <div class="alert alert-info" role="alert">
-    <strong>Note:</strong> A maintenance window is currently set for 
+    <p><strong>Note:</strong> The Maintenance Window feature allows Airflow to continue creating DAG runs as per the schedule, while overriding task execution. This ensures that no actions are performed during the maintenance period. After the maintenance window concludes, you may clear any DAG runs or task instances as needed to align with your operational requirements.</p>
+  </div>
+
+  {% if maintenance_data %}
+  <div class="alert alert-warning" role="alert">
+    <strong>Active Maintenance Window:</strong> A maintenance window is currently set for 
     {{ maintenance_data.start_time }} to {{ maintenance_data.end_time }} UTC
     with task handling set to {{ maintenance_data.task_handling }}.
-    To override, set a new window below.
+    To modify, please set a new window below.
   </div>
   {% endif %}
 
@@ -40,7 +44,7 @@
     
     <div class="form-group">
       <div class="col-sm-offset-2 col-sm-4">
-        <button type="submit" class="btn btn-primary">Set Maintenance Mode</button>
+        <button type="submit" class="btn btn-primary">Set Maintenance Window</button>
       </div>
     </div>
   </form>
@@ -70,7 +74,7 @@ document.getElementById('maintenanceForm').addEventListener('submit', function(e
     })
     .catch((error) => {
         console.error('Error:', error);
-        alert('An error occurred while setting maintenance mode.');
+        alert('An error occurred while setting the maintenance window.');
     });
 });
 </script>
