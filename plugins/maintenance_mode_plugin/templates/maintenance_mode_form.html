@@ -5,7 +5,7 @@
   
   <div class="alert alert-info" role="alert">
     <p><strong>Note:</strong> The Maintenance Window feature allows Airflow to continue creating DAG runs as per the schedule, while overriding task execution. This ensures that no actions are performed during the maintenance period. After the maintenance window concludes, you may clear any DAG runs or task instances as needed to align with your operational requirements.</p>
-    <p>This feature creates a system variable to manage the maintenance window. Please do not modify this variable manually, as it may lead to unexpected behavior. The variable contents are kept secret and can only be set by administrators.</p>
+    <p>This feature creates a variable to manage the maintenance window. Please do not modify this variable manually, as it may lead to unexpected behavior.</p>
   </div>
 
   {% if maintenance_data %}
