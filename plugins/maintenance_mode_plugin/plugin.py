@@ -27,7 +27,6 @@ class MaintenanceModeView(AppBuilderBaseView):
     def maintenance(self):
         maintenance_data = Variable.get("maintenance_mode_plugin_var", deserialize_json=True, default_var="")
         if maintenance_data:
-            maintenance_data = json.loads(maintenance_data)
             maintenance_data['start_time'] = maintenance_data['start_time'].split('+')[0]
             maintenance_data['end_time'] = maintenance_data['end_time'].split('+')[0]
         return self.render_template(
