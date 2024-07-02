@@ -19,6 +19,10 @@ extend-select = [
     "A",    # flake8-builtins
     "UP",   # pyupgrade
 ]
+extend-ignore = [
+    "C416",
+    "C408"
+]
 
 
 fixable = ["ALL"]
