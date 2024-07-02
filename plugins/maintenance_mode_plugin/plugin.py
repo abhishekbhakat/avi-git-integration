@@ -1,11 +1,11 @@
+import os
+from datetime import datetime, timezone
+
+from airflow.models import Variable
 from airflow.plugins_manager import AirflowPlugin
 from airflow.www.app import csrf
-from flask_appbuilder import expose, BaseView as AppBuilderBaseView
-from flask import Blueprint, request, jsonify, url_for, g
-from airflow.models import Variable
-import os
-import json
-from datetime import datetime, timezone
+from flask import Blueprint, g, jsonify, request, url_for
+from flask_appbuilder import BaseView as AppBuilderBaseView, expose
 
 current_dir = os.path.dirname(os.path.abspath(__file__))
 template_folder = os.path.join(current_dir, "templates")
@@ -18,6 +18,7 @@ bp = Blueprint(
     static_url_path="/static/maintenance_mode",
 )
 
+
 class MaintenanceModeView(AppBuilderBaseView):
     default_view = "maintenance"
     template_folder = template_folder
@@ -27,12 +28,9 @@ class MaintenanceModeView(AppBuilderBaseView):
     def maintenance(self):
         maintenance_data = Variable.get("maintenance_mode_plugin_var", deserialize_json=True, default_var="")
         if maintenance_data:
-            maintenance_data['start_time'] = maintenance_data['start_time'].split('+')[0]
-            maintenance_data['end_time'] = maintenance_data['end_time'].split('+')[0]
-        return self.render_template(
-            "maintenance_mode_form.html",
-            maintenance_data=maintenance_data
-        )
+            maintenance_data["start_time"] = maintenance_data["start_time"].split("+")[0]
+            maintenance_data["end_time"] = maintenance_data["end_time"].split("+")[0]
+        return self.render_template("maintenance_mode_form.html", maintenance_data=maintenance_data)
 
     @expose("/api/set_maintenance", methods=["POST"])
     @csrf.exempt
@@ -41,31 +39,24 @@ class MaintenanceModeView(AppBuilderBaseView):
         maintenance_data = {
             "start_time": datetime.fromisoformat(data.get("start_time")).astimezone(timezone.utc).isoformat(),
             "end_time": datetime.fromisoformat(data.get("end_time")).astimezone(timezone.utc).isoformat(),
-            "task_handling": data.get("task_handling")
+            "task_handling": data.get("task_handling"),
         }
-        
+
         Variable.set("maintenance_mode_plugin_var", maintenance_data, serialize_json=True)
-        
-        return jsonify({
-            "status": "success", 
-            "message": "Maintenance window set successfully", 
-            "redirect": url_for('Airflow.index')
-        })
+
+        return jsonify({"status": "success", "message": "Maintenance window set successfully", "redirect": url_for("Airflow.index")})
 
     @expose("/api/shut_maintenance", methods=["POST"])
     @csrf.exempt
     def shut_maintenance(self):
         Variable.delete("maintenance_mode_plugin_var")
-        
-        return jsonify({
-            "status": "success", 
-            "message": "Maintenance window shut successfully"
-        })
+
+        return jsonify({"status": "success", "message": "Maintenance window shut successfully"})
+
 
 v_appbuilder_view = MaintenanceModeView()
-v_appbuilder_package = {"name": "Maintenance Mode",
-                        "category": "Admin",
-                        "view": v_appbuilder_view}
+v_appbuilder_package = {"name": "Maintenance Mode", "category": "Admin", "view": v_appbuilder_view}
+
 
 class MaintenanceModePlugin(AirflowPlugin):
     name = "maintenance_mode_plugin"
