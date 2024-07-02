@@ -8,12 +8,6 @@ if TYPE_CHECKING:
     from airflow.models.dag import DAG
 
 @hookimpl
-def task_policy(task):
-    print("Hello from task_policy")
-    doc_str = "This is a test doc string"
-    task.doc = doc_str
-
-@hookimpl
 def dag_policy(dag):
     """Ensure that DAG has at least one tag and skip the DAG with `only_for_beta` tag."""
     print("Hello from DAG policy")
