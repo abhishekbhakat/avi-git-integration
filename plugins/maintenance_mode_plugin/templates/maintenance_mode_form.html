@@ -5,15 +5,23 @@
   
   <div class="alert alert-info" role="alert">
     <p><strong>Note:</strong> The Maintenance Window feature allows Airflow to continue creating DAG runs as per the schedule, while overriding task execution. This ensures that no actions are performed during the maintenance period. After the maintenance window concludes, you may clear any DAG runs or task instances as needed to align with your operational requirements.</p>
+    <p>This feature creates a system variable to manage the maintenance window. Please do not modify this variable manually, as it may lead to unexpected behavior. The variable contents are kept secret and can only be set by administrators.</p>
   </div>
 
   {% if maintenance_data %}
   <div class="alert alert-warning" role="alert">
-    <strong>Active Maintenance Window:</strong> A maintenance window is currently set for 
+    <strong>Active Maintenance Window:</strong> A maintenance window is currently set from
     {{ maintenance_data.start_time }} to {{ maintenance_data.end_time }} UTC
     with task handling set to {{ maintenance_data.task_handling }}.
-    To modify, please set a new window below.
+    To modify, please set a new window below or shut the current window.
   </div>
+  <form id="shutMaintenanceForm" class="form-horizontal">
+    <div class="form-group">
+      <div class="col-sm-offset-2 col-sm-4">
+        <button type="submit" class="btn btn-danger">Shut Maintenance Window</button>
+      </div>
+    </div>
+  </form>
   {% endif %}
 
   <form id="maintenanceForm" class="form-horizontal">
@@ -36,7 +44,7 @@
       <div class="col-sm-4">
         <select id="task_handling" name="task_handling" class="form-control" required>
           <option value="failed">Failed</option>
-          <option value="skipped" selected>Skipped</option>
+          <option value="skipped">Skipped</option>
           <option value="success">Success</option>
         </select>
       </div>
@@ -51,6 +59,14 @@
 </div>
 
 <script>
+{% if maintenance_data %}
+document.getElementById('start_time').value = "{{ maintenance_data.start_time }}";
+document.getElementById('end_time').value = "{{ maintenance_data.end_time }}";
+document.getElementById('task_handling').value = "{{ maintenance_data.task_handling }}";
+{% else %}
+document.getElementById('task_handling').value = "skipped";
+{% endif %}
+
 document.getElementById('maintenanceForm').addEventListener('submit', function(e) {
     e.preventDefault();
     
@@ -75,6 +91,26 @@ document.getElementById('maintenanceForm').addEventListener('submit', function(e
     .catch((error) => {
         console.error('Error:', error);
         alert('An error occurred while setting the maintenance window.');
+    });
+});
+
+document.getElementById('shutMaintenanceForm')?.addEventListener('submit', function(e) {
+    e.preventDefault();
+    
+    fetch('/maintenancemodeview/api/shut_maintenance', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        alert(data.message);
+        window.location.reload();
+    })
+    .catch((error) => {
+        console.error('Error:', error);
+        alert('An error occurred while shutting the maintenance window.');
     });
 });
 </script>

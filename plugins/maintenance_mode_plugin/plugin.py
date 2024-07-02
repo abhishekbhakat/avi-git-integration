@@ -25,7 +25,11 @@ class MaintenanceModeView(AppBuilderBaseView):
     @expose("/")
     @csrf.exempt
     def maintenance(self):
-        maintenance_data = json.loads(Variable.get("maintenance_mode_plugin_var", "{}"))
+        maintenance_data = Variable.get("maintenance_mode_plugin_var", deserialize_json=True)
+        if maintenance_data:
+            maintenance_data = json.loads(maintenance_data)
+            maintenance_data['start_time'] = maintenance_data['start_time'].split('+')[0]
+            maintenance_data['end_time'] = maintenance_data['end_time'].split('+')[0]
         return self.render_template(
             "maintenance_mode_form.html",
             maintenance_data=maintenance_data
@@ -41,12 +45,22 @@ class MaintenanceModeView(AppBuilderBaseView):
             "task_handling": data.get("task_handling")
         }
         
-        Variable.set("maintenance_mode_plugin_var", json.dumps(maintenance_data))
+        Variable.set("maintenance_mode_plugin_var", maintenance_data, serialize_json=True)
         
         return jsonify({
             "status": "success", 
-            "message": "Maintenance mode set successfully", 
+            "message": "Maintenance window set successfully", 
             "redirect": url_for('Airflow.index')
+        })
+
+    @expose("/api/shut_maintenance", methods=["POST"])
+    @csrf.exempt
+    def shut_maintenance(self):
+        Variable.delete("maintenance_mode_plugin_var")
+        
+        return jsonify({
+            "status": "success", 
+            "message": "Maintenance window shut successfully"
         })
 
 v_appbuilder_view = MaintenanceModeView()
@@ -61,5 +75,4 @@ class MaintenanceModePlugin(AirflowPlugin):
 
     @staticmethod
     def before_request():
-        maintenance_data = json.loads(Variable.get("maintenance_mode_plugin_var", "{}"))
-        g.maintenance_mode = maintenance_data if maintenance_data else None
+        g.maintenance_mode = Variable.get("maintenance_mode_plugin_var", deserialize_json=True)
