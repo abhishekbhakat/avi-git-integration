@@ -1,0 +1,1 @@
+SELECT 'No entry' as name

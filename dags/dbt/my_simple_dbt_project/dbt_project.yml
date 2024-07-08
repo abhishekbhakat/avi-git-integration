@@ -1,3 +1,5 @@
-  name: 'my_simple_dbt_project'
+name: 'my_simple_dbt_project'
 vars:
     my_name: "No entry"
+
+profile: profilename
