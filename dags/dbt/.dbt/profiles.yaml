@@ -1,0 +1,13 @@
+profilename:
+  target: dev
+  outputs:
+    dev:
+    type: postgres
+    threads: 2
+    host: host.docker.internal
+    port: 5432
+    user: postgres
+    pass: postgres
+    dbname: dbt_db
+    schema: dbt_try
+    # use the dev schema

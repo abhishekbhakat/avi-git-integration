@@ -1,0 +1,1 @@
+SELECT * FROM "dbt_db"."dbt_try"."model1"

@@ -1,0 +1,118 @@
+{% extends "appbuilder/base.html" %}
+{% block content %}
+<div class="container">
+  <h2>Set Maintenance Window</h2>
+  
+  <div class="alert alert-info" role="alert">
+    <p><strong>Note:</strong> The Maintenance Window feature allows Airflow to continue creating DAG runs as per the schedule, while overriding task execution. This ensures that no actions are performed during the maintenance period. After the maintenance window concludes, you may clear any DAG runs or task instances as needed to align with your operational requirements.</p>
+    <p>The feature uses an Dag Policy to swap out tasks if maintenance window is active.</p>
+    <p>This feature creates a variable to manage the maintenance window. Please do not modify this variable manually, as it may lead to unexpected behavior.</p>
+  </div>
+
+  {% if maintenance_data %}
+  <div class="alert alert-warning" role="alert">
+    <strong>Active Maintenance Window:</strong> A maintenance window is currently set from
+    {{ maintenance_data.start_time }} to {{ maintenance_data.end_time }} UTC
+    with task handling set to {{ maintenance_data.task_handling }}.
+    To modify, please set a new window below or shut the current window.
+  </div>
+  <form id="shutMaintenanceForm" class="form-horizontal">
+    <div class="form-group">
+      <div class="col-sm-offset-2 col-sm-4">
+        <button type="submit" class="btn btn-danger">Shut Maintenance Window</button>
+      </div>
+    </div>
+  </form>
+  {% endif %}
+
+  <form id="maintenanceForm" class="form-horizontal">
+    <div class="form-group">
+      <label for="start_time" class="col-sm-2 control-label">Start Time (UTC):</label>
+      <div class="col-sm-4">
+        <input type="datetime-local" id="start_time" name="start_time" class="form-control" required>
+      </div>
+    </div>
+    
+    <div class="form-group">
+      <label for="end_time" class="col-sm-2 control-label">End Time (UTC):</label>
+      <div class="col-sm-4">
+        <input type="datetime-local" id="end_time" name="end_time" class="form-control" required>
+      </div>
+    </div>
+    
+    <div class="form-group">
+      <label for="task_handling" class="col-sm-2 control-label">Task Handling:</label>
+      <div class="col-sm-4">
+        <select id="task_handling" name="task_handling" class="form-control" required>
+          <option value="failed">Failed</option>
+          <option value="skipped">Skipped</option>
+          <option value="success">Success</option>
+        </select>
+      </div>
+    </div>
+    
+    <div class="form-group">
+      <div class="col-sm-offset-2 col-sm-4">
+        <button type="submit" class="btn btn-primary">Set Maintenance Window</button>
+      </div>
+    </div>
+  </form>
+</div>
+
+<script>
+{% if maintenance_data %}
+document.getElementById('start_time').value = "{{ maintenance_data.start_time }}";
+document.getElementById('end_time').value = "{{ maintenance_data.end_time }}";
+document.getElementById('task_handling').value = "{{ maintenance_data.task_handling }}";
+{% else %}
+document.getElementById('task_handling').value = "skipped";
+{% endif %}
+
+document.getElementById('maintenanceForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    
+    var formData = {
+        start_time: document.getElementById('start_time').value,
+        end_time: document.getElementById('end_time').value,
+        task_handling: document.getElementById('task_handling').value
+    };
+
+    fetch('{{ url_for("MaintenanceModeView.set_maintenance") }}', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData)
+    })
+    .then(response => response.json())
+    .then(data => {
+        alert(data.message);
+        window.location.href = data.redirect;
+    })
+    .catch((error) => {
+        console.error('Error:', error);
+        alert('An error occurred while setting the maintenance window.');
+    });
+});
+
+document.getElementById('shutMaintenanceForm')?.addEventListener('submit', function(e) {
+    e.preventDefault();
+    
+    fetch('{{ url_for("MaintenanceModeView.shut_maintenance") }}', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        alert(data.message);
+        window.location.reload();
+    })
+    .catch((error) => {
+        console.error('Error:', error);
+        alert('An error occurred while shutting the maintenance window.');
+    });
+});
+</script>
+{% endblock %}

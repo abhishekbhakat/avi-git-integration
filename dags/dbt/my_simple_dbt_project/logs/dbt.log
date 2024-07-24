@@ -1,0 +1,267 @@
+[0m12:46:17.562231 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'invocation', 'label': 'start', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0xffff9233bc90>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0xffff91156690>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0xffff90f91850>]}
+
+
+============================== 12:46:17.563897 | 437000de-b733-4cf1-9b23-abc61a8b7a06 ==============================
+[0m12:46:17.563897 [info ] [MainThread]: Running with dbt=1.8.3
+[0m12:46:17.564223 [debug] [MainThread]: running dbt with arguments {'printer_width': '80', 'indirect_selection': 'eager', 'log_cache_events': 'False', 'write_json': 'True', 'partial_parse': 'True', 'cache_selected_only': 'False', 'warn_error': 'None', 'debug': 'False', 'profiles_dir': '/home/astro/.dbt', 'log_path': '/usr/local/airflow/dags/dbt/my_simple_dbt_project/logs', 'fail_fast': 'False', 'version_check': 'True', 'use_colors': 'True', 'use_experimental_parser': 'False', 'no_print': 'None', 'quiet': 'False', 'empty': 'None', 'log_format': 'default', 'invocation_command': 'dbt docs generate', 'static_parser': 'True', 'warn_error_options': 'WarnErrorOptions(include=[], exclude=[])', 'target_path': 'None', 'introspect': 'True', 'send_anonymous_usage_stats': 'True'}
+[0m12:46:17.564765 [error] [MainThread]: Encountered an error:
+Runtime Error
+  dbt cannot run because no profile was specified for this dbt project.
+  To specify a profile for this project, add a line like the this to
+  your dbt_project.yml file:
+  
+  profile: [profile name]
+  
+  Here, [profile name] should be replaced with a profile name
+  defined in your profiles.yml file. You can find profiles.yml here:
+  
+  /home/astro/.dbt/profiles.yml
+  
+[0m12:46:17.565235 [debug] [MainThread]: Resource report: {"command_name": "generate", "command_wall_clock_time": 0.020976175, "process_user_time": 0.518117, "process_kernel_time": 0.092198, "process_mem_max_rss": "90464", "process_out_blocks": "3", "command_success": false, "process_in_blocks": "0"}
+[0m12:46:17.565497 [debug] [MainThread]: Command `dbt docs generate` failed at 12:46:17.565455 after 0.02 seconds
+[0m12:46:17.565671 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'invocation', 'label': 'end', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0xffff90ff0290>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0xffff95181a90>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0xffff90fd6910>]}
+[0m12:46:17.565840 [debug] [MainThread]: Flushing usage events
+[0m12:47:47.802474 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'invocation', 'label': 'start', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0xffff81f83e10>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0xffff82283090>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0xffff81f83ed0>]}
+
+
+============================== 12:47:47.804199 | 6f2aa055-72d1-4a03-98df-be1ccc4780e7 ==============================
+[0m12:47:47.804199 [info ] [MainThread]: Running with dbt=1.8.3
+[0m12:47:47.804520 [debug] [MainThread]: running dbt with arguments {'printer_width': '80', 'indirect_selection': 'eager', 'write_json': 'True', 'log_cache_events': 'False', 'partial_parse': 'True', 'cache_selected_only': 'False', 'warn_error': 'None', 'debug': 'False', 'version_check': 'True', 'log_path': '/usr/local/airflow/dags/dbt/my_simple_dbt_project/logs', 'profiles_dir': '/home/astro/.dbt', 'fail_fast': 'False', 'use_colors': 'True', 'use_experimental_parser': 'False', 'no_print': 'None', 'quiet': 'False', 'empty': 'None', 'warn_error_options': 'WarnErrorOptions(include=[], exclude=[])', 'introspect': 'True', 'log_format': 'default', 'static_parser': 'True', 'target_path': 'None', 'invocation_command': 'dbt docs generate', 'send_anonymous_usage_stats': 'True'}
+[0m12:47:47.805033 [error] [MainThread]: Encountered an error:
+Runtime Error
+  dbt cannot run because no profile was specified for this dbt project.
+  To specify a profile for this project, add a line like the this to
+  your dbt_project.yml file:
+  
+  profile: [profile name]
+  
+  Here, [profile name] should be replaced with a profile name
+  defined in your profiles.yml file. You can find profiles.yml here:
+  
+  /home/astro/.dbt/profiles.yml
+  
+[0m12:47:47.805472 [debug] [MainThread]: Resource report: {"command_name": "generate", "command_wall_clock_time": 0.021638088, "process_user_time": 0.535758, "process_kernel_time": 0.092476, "process_mem_max_rss": "90448", "process_out_blocks": "3", "command_success": false, "process_in_blocks": "0"}
+[0m12:47:47.805774 [debug] [MainThread]: Command `dbt docs generate` failed at 12:47:47.805720 after 0.02 seconds
+[0m12:47:47.805994 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'invocation', 'label': 'end', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0xffff81f47450>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0xffff81f45b10>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0xffff81f39610>]}
+[0m12:47:47.806209 [debug] [MainThread]: Flushing usage events
+[0m12:56:07.951916 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'invocation', 'label': 'start', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0xffffacfbbd90>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0xffffad141e50>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0xffffad141e90>]}
+
+
+============================== 12:56:07.953682 | edeb5fa2-ab10-43ba-add0-a904fd0b8235 ==============================
+[0m12:56:07.953682 [info ] [MainThread]: Running with dbt=1.8.3
+[0m12:56:07.954013 [debug] [MainThread]: running dbt with arguments {'printer_width': '80', 'indirect_selection': 'eager', 'write_json': 'True', 'log_cache_events': 'False', 'partial_parse': 'True', 'cache_selected_only': 'False', 'profiles_dir': '/home/astro/.dbt', 'version_check': 'True', 'fail_fast': 'False', 'log_path': '/usr/local/airflow/dags/dbt/my_simple_dbt_project/logs', 'warn_error': 'None', 'debug': 'False', 'use_colors': 'True', 'use_experimental_parser': 'False', 'empty': 'None', 'quiet': 'False', 'no_print': 'None', 'warn_error_options': 'WarnErrorOptions(include=[], exclude=[])', 'invocation_command': 'dbt docs generate', 'static_parser': 'True', 'introspect': 'True', 'target_path': 'None', 'log_format': 'default', 'send_anonymous_usage_stats': 'True'}
+[0m12:56:07.955535 [error] [MainThread]: Encountered an error:
+Runtime Error
+  outputs not specified in profile 'profilename'
+[0m12:56:07.955994 [debug] [MainThread]: Resource report: {"command_name": "generate", "command_wall_clock_time": 0.023093086, "process_user_time": 0.53647, "process_kernel_time": 0.094082, "process_mem_max_rss": "90588", "process_out_blocks": "10", "command_success": false, "process_in_blocks": "0"}
+[0m12:56:07.956264 [debug] [MainThread]: Command `dbt docs generate` failed at 12:56:07.956220 after 0.02 seconds
+[0m12:56:07.956437 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'invocation', 'label': 'end', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0xffffae420c50>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0xffffacf73c90>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0xffffacf716d0>]}
+[0m12:56:07.956610 [debug] [MainThread]: Flushing usage events
+[0m13:01:20.043167 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'invocation', 'label': 'start', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0xffff9b83bd50>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0xffff9b80cd10>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0xffff9b852bd0>]}
+
+
+============================== 13:01:20.044890 | b8ead9db-1eec-4dac-bcb6-c53702b6e576 ==============================
+[0m13:01:20.044890 [info ] [MainThread]: Running with dbt=1.8.3
+[0m13:01:20.045236 [debug] [MainThread]: running dbt with arguments {'printer_width': '80', 'indirect_selection': 'eager', 'log_cache_events': 'False', 'write_json': 'True', 'partial_parse': 'True', 'cache_selected_only': 'False', 'warn_error': 'None', 'debug': 'False', 'version_check': 'True', 'log_path': '/usr/local/airflow/dags/dbt/my_simple_dbt_project/logs', 'fail_fast': 'False', 'profiles_dir': '/home/astro/.dbt', 'use_colors': 'True', 'use_experimental_parser': 'False', 'no_print': 'None', 'quiet': 'False', 'empty': 'None', 'warn_error_options': 'WarnErrorOptions(include=[], exclude=[])', 'introspect': 'True', 'static_parser': 'True', 'invocation_command': 'dbt docs generate', 'target_path': 'None', 'log_format': 'default', 'send_anonymous_usage_stats': 'True'}
+[0m13:01:20.113170 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'project_id', 'label': 'b8ead9db-1eec-4dac-bcb6-c53702b6e576', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0xffff9b8c7710>]}
+[0m13:01:20.133624 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'adapter_info', 'label': 'b8ead9db-1eec-4dac-bcb6-c53702b6e576', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0xffff9d353c90>]}
+[0m13:01:20.134275 [info ] [MainThread]: Registered adapter: postgres=1.8.2
+[0m13:01:20.139040 [debug] [MainThread]: checksum: 30bd4080c2bc8dee5936f8f60083ffbe1c906859d0fd965607c2144031479456, vars: {}, profile: , target: , version: 1.8.3
+[0m13:01:20.139487 [info ] [MainThread]: Unable to do partial parsing because saved manifest not found. Starting full parse.
+[0m13:01:20.139669 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'partial_parser', 'label': 'b8ead9db-1eec-4dac-bcb6-c53702b6e576', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0xffff9ac79c10>]}
+[0m13:01:20.503538 [warn ] [MainThread]: [[33mWARNING[0m]: Deprecated functionality
+The `tests` config has been renamed to `data_tests`. Please see
+https://docs.getdbt.com/docs/build/data-tests#new-data_tests-syntax for more
+information.
+[0m13:01:20.503980 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'deprecation', 'label': 'b8ead9db-1eec-4dac-bcb6-c53702b6e576', 'property_': 'warn', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0xffff9a8fcf90>]}
+[0m13:01:20.508395 [warn ] [MainThread]: [[33mWARNING[0m]: Did not find matching node for patch with name 'events' in the 'models' section of file 'models/description.yaml'
+[0m13:01:20.548244 [warn ] [MainThread]: [[33mWARNING[0m]: Test 'test.my_simple_dbt_project.unique_events_event_id.7a5e625cfc' (models/description.yaml) depends on a node named 'events' in package '' which was not found
+[0m13:01:20.548611 [warn ] [MainThread]: [[33mWARNING[0m]: Test 'test.my_simple_dbt_project.not_null_events_event_id.35976a7c71' (models/description.yaml) depends on a node named 'events' in package '' which was not found
+[0m13:01:20.548932 [warn ] [MainThread]: [[33mWARNING[0m]: Test 'test.my_simple_dbt_project.not_null_events__user_id_.2be104bf45' (models/description.yaml) depends on a node named 'events' in package '' which was not found
+[0m13:01:20.580902 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'load_project', 'label': 'b8ead9db-1eec-4dac-bcb6-c53702b6e576', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0xffff9ac667d0>]}
+[0m13:01:20.588765 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'resource_counts', 'label': 'b8ead9db-1eec-4dac-bcb6-c53702b6e576', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0xffff9a5efc50>]}
+[0m13:01:20.589084 [info ] [MainThread]: Found 2 models, 415 macros
+[0m13:01:20.589320 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'runnable_timing', 'label': 'b8ead9db-1eec-4dac-bcb6-c53702b6e576', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0xffff9a561450>]}
+[0m13:01:20.590134 [info ] [MainThread]: 
+[0m13:01:20.590450 [debug] [MainThread]: Acquiring new postgres connection 'master'
+[0m13:01:20.626890 [debug] [ThreadPool]: Acquiring new postgres connection 'list_dbt_db_dbt_try'
+[0m13:01:20.659136 [debug] [ThreadPool]: Using postgres connection "list_dbt_db_dbt_try"
+[0m13:01:20.659415 [debug] [ThreadPool]: On list_dbt_db_dbt_try: BEGIN
+[0m13:01:20.659570 [debug] [ThreadPool]: Opening a new connection, currently in state init
+[0m13:01:20.664434 [debug] [ThreadPool]: SQL status: BEGIN in 0.005 seconds
+[0m13:01:20.664733 [debug] [ThreadPool]: Using postgres connection "list_dbt_db_dbt_try"
+[0m13:01:20.664898 [debug] [ThreadPool]: On list_dbt_db_dbt_try: /* {"app": "dbt", "dbt_version": "1.8.3", "profile_name": "profilename", "target_name": "dev", "connection_name": "list_dbt_db_dbt_try"} */
+select
+      'dbt_db' as database,
+      tablename as name,
+      schemaname as schema,
+      'table' as type
+    from pg_tables
+    where schemaname ilike 'dbt_try'
+    union all
+    select
+      'dbt_db' as database,
+      viewname as name,
+      schemaname as schema,
+      'view' as type
+    from pg_views
+    where schemaname ilike 'dbt_try'
+    union all
+    select
+      'dbt_db' as database,
+      matviewname as name,
+      schemaname as schema,
+      'materialized_view' as type
+    from pg_matviews
+    where schemaname ilike 'dbt_try'
+  
+[0m13:01:20.666659 [debug] [ThreadPool]: SQL status: SELECT 0 in 0.002 seconds
+[0m13:01:20.667341 [debug] [ThreadPool]: On list_dbt_db_dbt_try: ROLLBACK
+[0m13:01:20.667995 [debug] [ThreadPool]: On list_dbt_db_dbt_try: Close
+[0m13:01:20.670854 [debug] [MainThread]: Using postgres connection "master"
+[0m13:01:20.671172 [debug] [MainThread]: On master: BEGIN
+[0m13:01:20.671369 [debug] [MainThread]: Opening a new connection, currently in state init
+[0m13:01:20.675118 [debug] [MainThread]: SQL status: BEGIN in 0.004 seconds
+[0m13:01:20.675353 [debug] [MainThread]: Using postgres connection "master"
+[0m13:01:20.675557 [debug] [MainThread]: On master: /* {"app": "dbt", "dbt_version": "1.8.3", "profile_name": "profilename", "target_name": "dev", "connection_name": "master"} */
+with relation as (
+        select
+            pg_rewrite.ev_class as class,
+            pg_rewrite.oid as id
+        from pg_rewrite
+    ),
+    class as (
+        select
+            oid as id,
+            relname as name,
+            relnamespace as schema,
+            relkind as kind
+        from pg_class
+    ),
+    dependency as (
+        select distinct
+            pg_depend.objid as id,
+            pg_depend.refobjid as ref
+        from pg_depend
+    ),
+    schema as (
+        select
+            pg_namespace.oid as id,
+            pg_namespace.nspname as name
+        from pg_namespace
+        where nspname != 'information_schema' and nspname not like 'pg\_%'
+    ),
+    referenced as (
+        select
+            relation.id AS id,
+            referenced_class.name ,
+            referenced_class.schema ,
+            referenced_class.kind
+        from relation
+        join class as referenced_class on relation.class=referenced_class.id
+        where referenced_class.kind in ('r', 'v', 'm')
+    ),
+    relationships as (
+        select
+            referenced.name as referenced_name,
+            referenced.schema as referenced_schema_id,
+            dependent_class.name as dependent_name,
+            dependent_class.schema as dependent_schema_id,
+            referenced.kind as kind
+        from referenced
+        join dependency on referenced.id=dependency.id
+        join class as dependent_class on dependency.ref=dependent_class.id
+        where
+            (referenced.name != dependent_class.name or
+             referenced.schema != dependent_class.schema)
+    )
+
+    select
+        referenced_schema.name as referenced_schema,
+        relationships.referenced_name as referenced_name,
+        dependent_schema.name as dependent_schema,
+        relationships.dependent_name as dependent_name
+    from relationships
+    join schema as dependent_schema on relationships.dependent_schema_id=dependent_schema.id
+    join schema as referenced_schema on relationships.referenced_schema_id=referenced_schema.id
+    group by referenced_schema, referenced_name, dependent_schema, dependent_name
+    order by referenced_schema, referenced_name, dependent_schema, dependent_name;
+[0m13:01:20.677332 [debug] [MainThread]: SQL status: SELECT 0 in 0.002 seconds
+[0m13:01:20.677941 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'runnable_timing', 'label': 'b8ead9db-1eec-4dac-bcb6-c53702b6e576', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0xffff9bbce850>]}
+[0m13:01:20.678174 [debug] [MainThread]: On master: ROLLBACK
+[0m13:01:20.678667 [debug] [MainThread]: On master: Close
+[0m13:01:20.679086 [info ] [MainThread]: Concurrency: 2 threads (target='dev')
+[0m13:01:20.679277 [info ] [MainThread]: 
+[0m13:01:20.680665 [debug] [Thread-1 (]: Began running node model.my_simple_dbt_project.model1
+[0m13:01:20.680915 [debug] [Thread-1 (]: Re-using an available connection from the pool (formerly list_dbt_db_dbt_try, now model.my_simple_dbt_project.model1)
+[0m13:01:20.681099 [debug] [Thread-1 (]: Began compiling node model.my_simple_dbt_project.model1
+[0m13:01:20.684318 [debug] [Thread-1 (]: Writing injected SQL for node "model.my_simple_dbt_project.model1"
+[0m13:01:20.685039 [debug] [Thread-1 (]: Began executing node model.my_simple_dbt_project.model1
+[0m13:01:20.685346 [debug] [Thread-1 (]: Finished running node model.my_simple_dbt_project.model1
+[0m13:01:20.685788 [debug] [Thread-2 (]: Began running node model.my_simple_dbt_project.model2
+[0m13:01:20.686050 [debug] [Thread-2 (]: Acquiring new postgres connection 'model.my_simple_dbt_project.model2'
+[0m13:01:20.686194 [debug] [Thread-2 (]: Began compiling node model.my_simple_dbt_project.model2
+[0m13:01:20.687362 [debug] [Thread-2 (]: Writing injected SQL for node "model.my_simple_dbt_project.model2"
+[0m13:01:20.687750 [debug] [Thread-2 (]: Began executing node model.my_simple_dbt_project.model2
+[0m13:01:20.688024 [debug] [Thread-2 (]: Finished running node model.my_simple_dbt_project.model2
+[0m13:01:20.688635 [debug] [MainThread]: Connection 'master' was properly closed.
+[0m13:01:20.688788 [debug] [MainThread]: Connection 'model.my_simple_dbt_project.model1' was properly closed.
+[0m13:01:20.688925 [debug] [MainThread]: Connection 'model.my_simple_dbt_project.model2' was properly closed.
+[0m13:01:20.689260 [debug] [MainThread]: Command end result
+[0m13:01:20.728865 [debug] [MainThread]: Acquiring new postgres connection 'generate_catalog'
+[0m13:01:20.729114 [info ] [MainThread]: Building catalog
+[0m13:01:20.732700 [debug] [ThreadPool]: Acquiring new postgres connection 'dbt_db.information_schema'
+[0m13:01:20.736264 [debug] [ThreadPool]: Using postgres connection "dbt_db.information_schema"
+[0m13:01:20.736481 [debug] [ThreadPool]: On dbt_db.information_schema: BEGIN
+[0m13:01:20.736634 [debug] [ThreadPool]: Opening a new connection, currently in state init
+[0m13:01:20.740259 [debug] [ThreadPool]: SQL status: BEGIN in 0.004 seconds
+[0m13:01:20.740526 [debug] [ThreadPool]: Using postgres connection "dbt_db.information_schema"
+[0m13:01:20.740724 [debug] [ThreadPool]: On dbt_db.information_schema: /* {"app": "dbt", "dbt_version": "1.8.3", "profile_name": "profilename", "target_name": "dev", "connection_name": "dbt_db.information_schema"} */
+
+    
+    
+
+    select
+        'dbt_db' as table_database,
+        sch.nspname as table_schema,
+        tbl.relname as table_name,
+        case tbl.relkind
+            when 'v' then 'VIEW'
+            when 'm' then 'MATERIALIZED VIEW'
+            else 'BASE TABLE'
+        end as table_type,
+        tbl_desc.description as table_comment,
+        col.attname as column_name,
+        col.attnum as column_index,
+        pg_catalog.format_type(col.atttypid, col.atttypmod) as column_type,
+        col_desc.description as column_comment,
+        pg_get_userbyid(tbl.relowner) as table_owner
+
+    from pg_catalog.pg_namespace sch
+    join pg_catalog.pg_class tbl on tbl.relnamespace = sch.oid
+    join pg_catalog.pg_attribute col on col.attrelid = tbl.oid
+    left outer join pg_catalog.pg_description tbl_desc on (tbl_desc.objoid = tbl.oid and tbl_desc.objsubid = 0)
+    left outer join pg_catalog.pg_description col_desc on (col_desc.objoid = tbl.oid and col_desc.objsubid = col.attnum)
+    where ((upper(sch.nspname) = upper('dbt_try') and
+           upper(tbl.relname) = upper('model1')) or (upper(sch.nspname) = upper('dbt_try') and
+           upper(tbl.relname) = upper('model2')))
+      and not pg_is_other_temp_schema(sch.oid) -- not a temporary schema belonging to another session
+      and tbl.relpersistence in ('p', 'u') -- [p]ermanent table or [u]nlogged table. Exclude [t]emporary tables
+      and tbl.relkind in ('r', 'v', 'f', 'p', 'm') -- o[r]dinary table, [v]iew, [f]oreign table, [p]artitioned table, [m]aterialized view. Other values are [i]ndex, [S]equence, [c]omposite type, [t]OAST table
+      and col.attnum > 0 -- negative numbers are used for system columns such as oid
+      and not col.attisdropped -- column as not been dropped
+
+    order by
+        sch.nspname,
+        tbl.relname,
+        col.attnum
+[0m13:01:20.742593 [debug] [ThreadPool]: SQL status: SELECT 0 in 0.002 seconds
+[0m13:01:20.743567 [debug] [ThreadPool]: On dbt_db.information_schema: ROLLBACK
+[0m13:01:20.744087 [debug] [ThreadPool]: On dbt_db.information_schema: Close
+[0m13:01:20.757775 [info ] [MainThread]: Catalog written to /usr/local/airflow/dags/dbt/my_simple_dbt_project/target/catalog.json
+[0m13:01:20.758453 [debug] [MainThread]: Resource report: {"command_name": "generate", "command_success": true, "command_wall_clock_time": 0.7340109, "process_user_time": 1.193224, "process_kernel_time": 0.135707, "process_mem_max_rss": "111732", "process_out_blocks": "5331", "process_in_blocks": "0"}
+[0m13:01:20.758732 [debug] [MainThread]: Command `dbt docs generate` succeeded at 13:01:20.758689 after 0.73 seconds
+[0m13:01:20.758900 [debug] [MainThread]: Connection 'generate_catalog' was properly closed.
+[0m13:01:20.759043 [debug] [MainThread]: Connection 'dbt_db.information_schema' was properly closed.
+[0m13:01:20.759202 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'invocation', 'label': 'end', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0xffff9b86e990>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0xffff9bb5b190>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0xffff9aab9e90>]}
+[0m13:01:20.759391 [debug] [MainThread]: Flushing usage events

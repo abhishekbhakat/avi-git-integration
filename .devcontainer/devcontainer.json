@@ -1,0 +1,41 @@
+{
+    "name": "Dev Container",
+    "customizations": {
+        "vscode": {
+            "settings": {
+                "terminal.integrated.defaultProfile.linux": "bash",
+                "python.languageServer": "Pylance",
+                "[python]": {
+                    "editor.defaultFormatter": "ms-python.black-formatter",
+                    "editor.formatOnSave": true,
+                    "editor.codeActionsOnSave": {
+                        "source.organizeImports": true
+                    }
+                },
+                "isort.args":["--profile", "black"]
+            },
+            "extensions": [
+                "ms-python.python",
+                "ms-python.vscode-pylance",
+                "ms-python.black-formatter",
+                "ms-python.isort",
+                "GitHub.copilot"
+            ]
+        }
+    },
+    // "features": {
+    //     "ghcr.io/devcontainers/features/git:1": {
+    //         "version": "latest",
+    //         "ppa": "false"
+    //     }
+    // },
+    "dockerFile": "${localWorkspaceFolder}/Dockerfile",
+    "mounts": [
+        "source=${localWorkspaceFolder},target=/usr/local/airflow,type=bind"
+    ],
+    "workspaceFolder": "/usr/local/airflow",
+    // for users who use non-standard git config patterns
+    // https://github.com/microsoft/vscode-remote-release/issues/2084#issuecomment-989756268
+    // "initializeCommand": "cd \"${localWorkspaceFolder}\" && git config --local user.email \"$(git config user.email)\" && git config --local user.name \"$(git config user.name)\"",
+    "overrideCommand": true
+}
