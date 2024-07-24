@@ -10,12 +10,15 @@ schedule_datasets = MONTHLY_CONSUMER_DATASETS[0]
 for dataset in MONTHLY_CONSUMER_DATASETS[1:]:
     schedule_datasets |= dataset
 
+md = """This DAG demonstrates the consumption of multiple datasets and run a task for each dataset."""
+
 @dag(
     dag_id="datasets_consumer_dag",
     start_date=datetime(2024, 7, 24),
     schedule=schedule_datasets,
     catchup=False,
     tags=['multi_dataset_handling'],
+    doc_md=md,
 )
 def datasets_consumer_dag():
     @task
