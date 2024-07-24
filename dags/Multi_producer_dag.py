@@ -7,12 +7,15 @@ from pendulum import datetime
 months = ["jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sep", "oct", "nov", "dec"]
 MONTHLY_CONSUMER_DATASETS = [Dataset(f"file:///datasets/monthly_consumer_{month}") for month in months]
 
+md = """This DAG demonstrates the production of multiple datasets based on certain condition."""
+
 @dag(
     'datasets_producer_dag',
     start_date=datetime(2024, 7, 24),
     schedule=None,
     catchup=False,
     tags=['multi_dataset_handling'],
+    doc_md=md,
 )
 def datasets_producer_dag():
 
