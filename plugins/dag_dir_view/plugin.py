@@ -1,7 +1,7 @@
 import os
 from datetime import datetime, timezone
 
-from airflow.models import Variable
+from airflow.models import DagBag
 from airflow.plugins_manager import AirflowPlugin
 from airflow.www.app import csrf
 from flask import Blueprint, g, jsonify, request, url_for
@@ -26,7 +26,13 @@ class DagDirViewPlugin(AppBuilderBaseView):
     @expose("/")
     @csrf.exempt
     def dag_dir_view(self):
-        return self.render_template("dag_dir_view.html", content="awesome")
+        dagbag = DagBag(read_dags_from_db=True)
+        dag_folder = dagbag.dag_folder
+        content = {
+            "dags": [],
+            "dags_folder": dag_folder,
+        }
+        return self.render_template("dag_dir_view.html", content=content)
 
 
 v_appbuilder_view = DagDirViewPlugin()
