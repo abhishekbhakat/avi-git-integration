@@ -1,10 +1,10 @@
 import os
-from datetime import datetime, timezone
+from collections import defaultdict
 
 from airflow.models import DagBag
 from airflow.plugins_manager import AirflowPlugin
 from airflow.www.app import csrf
-from flask import Blueprint, g, jsonify, request, url_for
+from flask import Blueprint
 from flask_appbuilder import BaseView as AppBuilderBaseView, expose
 
 current_dir = os.path.dirname(os.path.abspath(__file__))
@@ -18,6 +18,28 @@ bp = Blueprint(
     static_url_path="/static/dag_dir_view",
 )
 
+def nested_defaultdict():
+    return defaultdict(nested_defaultdict)
+
+def get_dag_structure():
+    structure = nested_defaultdict()
+    dag_bag = DagBag()
+    dags_folder = dag_bag.dag_folder
+    dags = dag_bag.dags
+
+    for dag_id, dag in dags.items():
+        rel_path = os.path.relpath(dag.fileloc, dags_folder)
+        path_parts = rel_path.split(os.sep)
+        current = structure
+        for part in path_parts[:-1]:  # Navigate through directories
+            current = current[part]
+        
+        filename = path_parts[-1]
+        if 'dags' not in current[filename]:
+            current[filename]['dags'] = []
+        current[filename]['dags'].append(dag_id)
+
+    return dict(structure)  # Convert defaultdict to regular dict
 
 class DagDirViewPlugin(AppBuilderBaseView):
     default_view = "dag_dir_view"
@@ -26,18 +48,13 @@ class DagDirViewPlugin(AppBuilderBaseView):
     @expose("/")
     @csrf.exempt
     def dag_dir_view(self):
-        dagbag = DagBag(read_dags_from_db=True)
-        dag_folder = dagbag.dag_folder
         content = {
-            "dags": [],
-            "dags_folder": dag_folder,
+            "structure": get_dag_structure(),
         }
         return self.render_template("dag_dir_view.html", content=content)
 
-
 v_appbuilder_view = DagDirViewPlugin()
 v_appbuilder_package = {"name": "Dag Dir", "category": "Dag Dir View", "view": v_appbuilder_view}
-
 
 class DagDirViewPlugin(AirflowPlugin):
     name = "DagDirViewPlugin"

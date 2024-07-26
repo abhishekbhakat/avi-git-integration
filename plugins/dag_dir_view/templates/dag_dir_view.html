@@ -1,25 +1,131 @@
 {% extends "appbuilder/base.html" %}
 {% block content %}
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <style>
+        .dag-directory-container {
+            background-color: white;
+            border: 1px solid #e5e5e5;
+            border-radius: 4px;
+            margin-top: 20px;
+            padding: 20px;
+        }
+        .dag-directory-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+        }
+        .dag-directory-table th,
+        .dag-directory-table td {
+            padding: 8px 12px;
+            text-align: left;
+            border-bottom: 1px solid #e5e5e5;
+        }
+        .dag-directory-table th {
+            background-color: #f8f9fa;
+            font-weight: 600;
+            color: #3d4d5d;
+        }
+        .dag-directory-table tr:hover {
+            background-color: #f5f5f5;
+        }
+        .file-icon {
+            color: #51504f;
+            margin-right: 5px;
+        }
+        .folder-icon {
+            color: #ffd700;
+            margin-right: 5px;
+        }
+        .dag-icon {
+            color: #017cee;
+            margin-right: 5px;
+        }
+        .dag-link {
+            color: #017cee;
+            text-decoration: none;
+        }
+        .dag-link:hover {
+            text-decoration: underline;
+        }
+        .collapsible {
+            cursor: pointer;
+        }
+        .hidden {
+            display: none;
+        }
+    </style>
+
     <h1>DAG Directory View</h1>
-    {% for folder_name, dag_list in content.items() %}
-        <div class="container">
-            <div class="panel-group">
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                <h4 class="panel-title">
-                    <a data-toggle="collapse" href="#{{ folder_name }}">{{ folder_name }}</a>
-                </h4>
-                </div>
-                <div id="{{ folder_name }}" class="panel-collapse collapse">
-                    {% for dag_id in dag_list %}
-                        <a href="http://localhost:8080/dags/{{ dag_id }}/grid"> <div class="panel-body">{{ dag_id }}</div></a>
+    <div class="dag-directory-container">
+        <table class="dag-directory-table">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Type</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% macro render_tree(tree, path='', level=0) %}
+                    {% for key, value in tree.items() %}
+                        {% set current_path = path + '/' + key %}
+                        {% if 'dags' in value %}
+                            <tr class="collapsible" data-level="{{ level }}">
+                                <td style="padding-left: {{ level * 20 }}px;">
+                                    <i class="fas fa-caret-right"></i>
+                                    <i class="fas fa-file file-icon"></i> {{ key }}
+                                </td>
+                                <td>Python File</td>
+                            </tr>
+                            {% for dag_id in value['dags'] %}
+                                <tr class="dag-row hidden" data-level="{{ level + 1 }}">
+                                    <td style="padding-left: {{ (level + 1) * 20 }}px;">
+                                        <i class="fas fa-cog dag-icon"></i>
+                                        <a href="{{ url_for('Airflow.grid', dag_id=dag_id) }}" class="dag-link">{{ dag_id }}</a>
+                                    </td>
+                                    <td>DAG</td>
+                                </tr>
+                            {% endfor %}
+                        {% else %}
+                            <tr class="collapsible" data-level="{{ level }}">
+                                <td style="padding-left: {{ level * 20 }}px;">
+                                    <i class="fas fa-caret-right"></i>
+                                    <i class="fas fa-folder folder-icon"></i> {{ key }}
+                                </td>
+                                <td>Folder</td>
+                            </tr>
+                            {{ render_tree(value, current_path, level + 1) }}
+                        {% endif %}
                     {% endfor %}
-                </div>
-            </div>
-            </div>
-        </div>
-    {% endfor %}
+                {% endmacro %}
+
+                {{ render_tree(content.structure) }}
+            </tbody>
+        </table>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+        $(function() {
+            $('.collapsible').click(function() {
+                var level = $(this).data('level');
+                var nextLevel = level + 1;
+                var $icon = $(this).find('i.fas').first();
+                
+                // Toggle the caret icon
+                $icon.toggleClass('fa-caret-right fa-caret-down');
+                
+                // Toggle visibility of child elements
+                var $next = $(this).next();
+                while ($next.length && $next.data('level') > level) {
+                    if ($next.data('level') === nextLevel) {
+                        $next.toggleClass('hidden');
+                    } else if (!$next.hasClass('hidden')) {
+                        // Collapse any open nested levels
+                        $next.find('i.fas').first().removeClass('fa-caret-down').addClass('fa-caret-right');
+                    }
+                    $next = $next.next();
+                }
+            });
+        });
+    </script>
 {% endblock %}
