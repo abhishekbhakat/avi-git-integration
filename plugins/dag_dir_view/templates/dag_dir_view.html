@@ -65,7 +65,7 @@
                 </tr>
             </thead>
             <tbody>
-                {% macro render_tree(tree, path='', level=0) %}
+                {% macro render_tree(tree, path='', level=1) %}
                     {% for key, value in tree.items() %}
                         {% set current_path = path + '/' + key %}
                         {% if 'dags' in value %}
@@ -98,7 +98,7 @@
                     {% endfor %}
                 {% endmacro %}
 
-                {{ render_tree(content.structure) }}
+                {{ render_tree(content.structure, level=0) }}
             </tbody>
         </table>
     </div>
@@ -106,12 +106,17 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script>
         $(function() {
+            $('.dag-row, .collapsible[data-level]').not('[data-level="0"]').addClass('hidden');
+    
             function toggleChildren($element, show) {
-                var level = $element.data('level');
+                var level = parseInt($element.data('level'));
                 var $next = $element.next();
-                while ($next.length && $next.data('level') > level) {
+                while ($next.length && parseInt($next.data('level')) > level) {
                     if (show) {
                         $next.removeClass('hidden');
+                        if ($next.hasClass('collapsible')) {
+                            $next.find('i.fas').first().removeClass('fa-caret-right').addClass('fa-caret-down');
+                        }
                     } else {
                         $next.addClass('hidden');
                         if ($next.hasClass('collapsible')) {
