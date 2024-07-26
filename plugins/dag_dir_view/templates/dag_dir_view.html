@@ -1,4 +1,25 @@
 {% extends "appbuilder/base.html" %}
 {% block content %}
-    <p>Airflow is {{ content["dags_folder"] }}!</p>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <h1>DAG Directory View</h1>
+    {% for folder_name, dag_list in content.items() %}
+        <div class="container">
+            <div class="panel-group">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                <h4 class="panel-title">
+                    <a data-toggle="collapse" href="#{{ folder_name }}">{{ folder_name }}</a>
+                </h4>
+                </div>
+                <div id="{{ folder_name }}" class="panel-collapse collapse">
+                    {% for dag_id in dag_list %}
+                        <a href="http://localhost:8080/dags/{{ dag_id }}/grid"> <div class="panel-body">{{ dag_id }}</div></a>
+                    {% endfor %}
+                </div>
+            </div>
+            </div>
+        </div>
+    {% endfor %}
 {% endblock %}
