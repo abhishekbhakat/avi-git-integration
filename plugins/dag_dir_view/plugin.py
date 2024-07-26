@@ -34,7 +34,7 @@ def get_dag_structure():
         current = structure
         for part in path_parts[:-1]:  # Navigate through directories
             current = current[part]
-        
+
         filename = path_parts[-1]
         if 'dags' not in current[filename]:
             current[filename]['dags'] = []
@@ -55,7 +55,7 @@ class DagDirViewPlugin(AppBuilderBaseView):
         return self.render_template("dag_dir_view.html", content=content)
 
 v_appbuilder_view = DagDirViewPlugin()
-v_appbuilder_package = {"name": "Dag Dir", "category": "Dag Dir View", "view": v_appbuilder_view}
+v_appbuilder_package = {"name": "Dag Dir View", "category": "", "view": v_appbuilder_view}
 
 class DagDirViewPlugin(AirflowPlugin):
     name = "DagDirViewPlugin"
