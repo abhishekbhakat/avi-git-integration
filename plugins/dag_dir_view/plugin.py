@@ -23,7 +23,8 @@ def nested_defaultdict():
 
 def get_dag_structure():
     structure = nested_defaultdict()
-    dag_bag = DagBag()
+    dag_bag = DagBag(read_dags_from_db=True)
+    dag_bag.collect_dags_from_db()
     dags_folder = dag_bag.dag_folder
     dags = dag_bag.dags
 
