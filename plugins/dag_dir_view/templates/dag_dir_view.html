@@ -106,25 +106,28 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script>
         $(function() {
-            $('.collapsible').click(function() {
-                var level = $(this).data('level');
-                var nextLevel = level + 1;
-                var $icon = $(this).find('i.fas').first();
-                
-                // Toggle the caret icon
-                $icon.toggleClass('fa-caret-right fa-caret-down');
-                
-                // Toggle visibility of child elements
-                var $next = $(this).next();
+            function toggleChildren($element, show) {
+                var level = $element.data('level');
+                var $next = $element.next();
                 while ($next.length && $next.data('level') > level) {
-                    if ($next.data('level') === nextLevel) {
-                        $next.toggleClass('hidden');
-                    } else if (!$next.hasClass('hidden')) {
-                        // Collapse any open nested levels
-                        $next.find('i.fas').first().removeClass('fa-caret-down').addClass('fa-caret-right');
+                    if (show) {
+                        $next.removeClass('hidden');
+                    } else {
+                        $next.addClass('hidden');
+                        if ($next.hasClass('collapsible')) {
+                            $next.find('i.fas').first().removeClass('fa-caret-down').addClass('fa-caret-right');
+                        }
                     }
                     $next = $next.next();
                 }
+            }
+    
+            $('.collapsible').click(function() {
+                var $icon = $(this).find('i.fas').first();
+                $icon.toggleClass('fa-caret-right fa-caret-down');
+                
+                var isExpanding = $icon.hasClass('fa-caret-down');
+                toggleChildren($(this), isExpanding);
             });
         });
     </script>
