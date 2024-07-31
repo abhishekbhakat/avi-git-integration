@@ -1,0 +1,12 @@
+[build-system]
+requires = ["setuptools", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "multicron_timetable"
+version = "0.0.1"
+
+dependencies = ["apache-airflow>=2.6"]
+
+[project.entry-points.'airflow.plugins']
+multicron_timetable_plugin = "multicron_timetable:MaintenanceModePlugin"
