@@ -10,3 +10,16 @@ dependencies = ["apache-airflow>=2.6"]
 
 [project.entry-points.'airflow.plugins']
 pause_running_dags = "pause_running_dags:PauseRunningDagsPlugin"
+[tool.poetry]
+name = "pause_running_dags"
+version = "0.1.0"
+description = "Airflow plugin to pause running DAGs"
+authors = ["Your Name <your.email@example.com>"]
+
+[tool.poetry.dependencies]
+python = "^3.7"
+apache-airflow = "^2.0.0"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
