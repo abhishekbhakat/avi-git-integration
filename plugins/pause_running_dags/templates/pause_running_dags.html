@@ -1,0 +1,40 @@
+{% extends "airflow/base.html" %}
+
+{% block title %}Pause Running DAGs{% endblock %}
+
+{% block content %}
+<h2>Running DAGs</h2>
+<ul id="running-dags-list">
+    {% for dag_id in content.running_dags %}
+    <li>
+        {{ dag_id }}
+        <button onclick="pauseDAG('{{ dag_id }}')">Pause</button>
+    </li>
+    {% endfor %}
+</ul>
+
+<script>
+function pauseDAG(dagId) {
+    fetch('/pause_running_dags/pause', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: 'dag_id=' + encodeURIComponent(dagId)
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.status === 'success') {
+            alert(data.message);
+            location.reload();
+        } else {
+            alert('Error: ' + data.message);
+        }
+    })
+    .catch((error) => {
+        console.error('Error:', error);
+        alert('An error occurred while pausing the DAG');
+    });
+}
+</script>
+{% endblock %}
