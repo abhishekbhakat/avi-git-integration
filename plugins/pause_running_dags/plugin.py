@@ -2,9 +2,9 @@ import os
 from airflow.models import DagBag, DagModel, Variable
 from airflow.plugins_manager import AirflowPlugin
 from airflow.www.app import csrf
-from flask import Blueprint, request, jsonify, url_for
+from flask import Blueprint, jsonify
 from flask_appbuilder import BaseView as AppBuilderBaseView, expose
-from airflow.api.common.experimental import delete_dag, pause
+from sqlalchemy.orm import Session
 import json
 
 current_dir = os.path.dirname(os.path.abspath(__file__))
@@ -21,13 +21,9 @@ bp = Blueprint(
 PAUSE_RUNNING_DAGS_VAR_KEY = 'pause_running_dags_plugin_var'
 
 def get_unpaused_dags():
-    dag_bag = DagBag(read_dags_from_db=True)
-    dag_bag.collect_dags_from_db()
-    unpaused_dags = []
-    for dag_id, dag in dag_bag.dags.items():
-        if not dag.get_is_paused():
-            unpaused_dags.append(dag_id)
-    return unpaused_dags
+    with Session() as session:
+        unpaused_dags = session.query(DagModel.dag_id).filter(DagModel.is_paused == False).all()
+    return [dag.dag_id for dag in unpaused_dags]
 
 def get_dag_structure(dag_ids):
     structure = {}
@@ -74,8 +70,12 @@ class PauseRunningDagsPlugin(AppBuilderBaseView):
     def pause_dags(self):
         try:
             unpaused_dags = get_unpaused_dags()
-            for dag_id in unpaused_dags:
-                pause.set_dag_paused(dag_id=dag_id, is_paused=True)
+            with Session() as session:
+                for dag_id in unpaused_dags:
+                    dag = session.query(DagModel).filter(DagModel.dag_id == dag_id).first()
+                    if dag:
+                        dag.is_paused = True
+                session.commit()
             Variable.set(PAUSE_RUNNING_DAGS_VAR_KEY, json.dumps(unpaused_dags))
             return jsonify({"status": "success", "message": "All unpaused DAGs have been paused and preserved"})
         except Exception as e:
@@ -86,8 +86,12 @@ class PauseRunningDagsPlugin(AppBuilderBaseView):
     def unpause_dags(self):
         try:
             paused_dags = Variable.get(PAUSE_RUNNING_DAGS_VAR_KEY, deserialize_json=True, default=[])
-            for dag_id in paused_dags:
-                pause.set_dag_paused(dag_id=dag_id, is_paused=False)
+            with Session() as session:
+                for dag_id in paused_dags:
+                    dag = session.query(DagModel).filter(DagModel.dag_id == dag_id).first()
+                    if dag:
+                        dag.is_paused = False
+                session.commit()
             Variable.delete(PAUSE_RUNNING_DAGS_VAR_KEY)
             return jsonify({"status": "success", "message": "All preserved DAGs have been unpaused"})
         except Exception as e:

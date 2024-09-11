@@ -1,1 +1,1 @@
-from pause_running_dags.plugin import PauseRunningDagsPlugin
+from .plugin import PauseRunningDagsPlugin
