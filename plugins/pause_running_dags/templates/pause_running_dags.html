@@ -179,7 +179,7 @@
         });
 
         function pauseDags() {
-            fetch('/pause_running_dags/pause', {
+            fetch('{{ url_for('PauseRunningDagsView.pause') }}', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -201,7 +201,7 @@
         }
 
         function unpauseDags() {
-            fetch('/pause_running_dags/unpause', {
+            fetch('{{ url_for('PauseRunningDagsView.unpause') }}', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

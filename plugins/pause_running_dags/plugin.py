@@ -19,12 +19,14 @@ bp = Blueprint(
     static_url_path="/static/pause_running_dags",
 )
 
-PAUSE_RUNNING_DAGS_VAR_KEY = 'pause_running_dags_plugin_var'
+PAUSE_RUNNING_DAGS_VAR_KEY = "pause_running_dags_plugin_var"
+
 
 @provide_session
 def get_unpaused_dags(session=None):
     unpaused_dags = session.query(DagModel.dag_id).filter(DagModel.is_paused == False).all()
     return [dag.dag_id for dag in unpaused_dags]
+
 
 def get_dag_structure(dag_ids):
     structure = {}
@@ -45,12 +47,13 @@ def get_dag_structure(dag_ids):
 
             filename = path_parts[-1]
             if filename not in current:
-                current[filename] = {'dags': []}
-            current[filename]['dags'].append(dag_id)
+                current[filename] = {"dags": []}
+            current[filename]["dags"].append(dag_id)
 
     return structure
 
-class PauseRunningDagsPlugin(AppBuilderBaseView):
+
+class PauseRunningDagsView(AppBuilderBaseView):
     default_view = "pause_running_dags"
     template_folder = template_folder
 
@@ -66,10 +69,10 @@ class PauseRunningDagsPlugin(AppBuilderBaseView):
         }
         return self.render_template("pause_running_dags.html", content=content)
 
-    @expose("/pause", methods=['POST'])
+    @expose("/pause_running_dags/pause", methods=["POST"])
     @csrf.exempt
     @provide_session
-    def pause_dags(self, session=None):
+    def pause(self, session=None):
         try:
             unpaused_dags = get_unpaused_dags(session=session)
             for dag_id in unpaused_dags:
@@ -83,10 +86,10 @@ class PauseRunningDagsPlugin(AppBuilderBaseView):
             session.rollback()
             return jsonify({"status": "error", "message": str(e)})
 
-    @expose("/unpause", methods=['POST'])
+    @expose("/pause_running_dags/unpause", methods=["POST"])
     @csrf.exempt
     @provide_session
-    def unpause_dags(self, session=None):
+    def unpause(self, session=None):
         try:
             paused_dags = Variable.get(PAUSE_RUNNING_DAGS_VAR_KEY, deserialize_json=True, default_var=[])
             for dag_id in paused_dags:
@@ -100,10 +103,12 @@ class PauseRunningDagsPlugin(AppBuilderBaseView):
             session.rollback()
             return jsonify({"status": "error", "message": str(e)})
 
-v_appbuilder_view = PauseRunningDagsPlugin()
+
+v_appbuilder_view = PauseRunningDagsView()
 v_appbuilder_package = {"name": "Pause Running DAGs", "category": "", "view": v_appbuilder_view}
 
+
 class PauseRunningDagsPlugin(AirflowPlugin):
-    name = "PauseRunningDagsPlugin"
+    name = "pause_running_dags"
     flask_blueprints = [bp]
     appbuilder_views = [v_appbuilder_package]
