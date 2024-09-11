@@ -24,7 +24,7 @@ PAUSE_RUNNING_DAGS_VAR_KEY = "pause_running_dags_plugin_var"
 
 @provide_session
 def get_unpaused_dags(session=None):
-    unpaused_dags = session.query(DagModel.dag_id).filter(DagModel.is_paused == False).all()
+    unpaused_dags = session.query(DagModel.dag_id).filter(DagModel.is_active == True).filter(DagModel.is_paused == False).all()
     return [dag.dag_id for dag in unpaused_dags]
 
 
