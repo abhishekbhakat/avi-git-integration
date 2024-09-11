@@ -1,11 +1,13 @@
 import os
 from datetime import datetime, timezone
 
-from airflow.models import Variable
+from airflow.models import Variable, DagModel
 from airflow.plugins_manager import AirflowPlugin
 from airflow.www.app import csrf
 from flask import Blueprint, g, jsonify, request, url_for
 from flask_appbuilder import BaseView as AppBuilderBaseView, expose
+from sqlalchemy.orm import Session
+from airflow.utils.session import provide_session
 
 current_dir = os.path.dirname(os.path.abspath(__file__))
 template_folder = os.path.join(current_dir, "templates")
@@ -18,6 +20,10 @@ bp = Blueprint(
     static_url_path="/static/maintenance_mode",
 )
 
+@provide_session
+def get_unpaused_dags(session=None):
+    unpaused_dags = session.query(DagModel.dag_id).filter(DagModel.is_paused == False).all()
+    return [dag.dag_id for dag in unpaused_dags]
 
 class MaintenanceModeView(AppBuilderBaseView):
     default_view = "maintenance"
@@ -30,7 +36,8 @@ class MaintenanceModeView(AppBuilderBaseView):
         if maintenance_data:
             maintenance_data["start_time"] = maintenance_data["start_time"].split("+")[0]
             maintenance_data["end_time"] = maintenance_data["end_time"].split("+")[0]
-        return self.render_template("maintenance_mode_form.html", maintenance_data=maintenance_data)
+        unpaused_dags = get_unpaused_dags()
+        return self.render_template("maintenance_mode_form.html", maintenance_data=maintenance_data, unpaused_dags=unpaused_dags)
 
     @expose("/api/set_maintenance", methods=["POST"])
     @csrf.exempt
