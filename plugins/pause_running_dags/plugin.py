@@ -2,6 +2,7 @@ import os
 from airflow.models import DagBag, DagModel, Variable
 from airflow.plugins_manager import AirflowPlugin
 from airflow.www.app import csrf
+from airflow.utils.session import provide_session
 from flask import Blueprint, jsonify
 from flask_appbuilder import BaseView as AppBuilderBaseView, expose
 from sqlalchemy.orm import Session
@@ -20,9 +21,9 @@ bp = Blueprint(
 
 PAUSE_RUNNING_DAGS_VAR_KEY = 'pause_running_dags_plugin_var'
 
-def get_unpaused_dags():
-    with Session() as session:
-        unpaused_dags = session.query(DagModel.dag_id).filter(DagModel.is_paused == False).all()
+@provide_session
+def get_unpaused_dags(session=None):
+    unpaused_dags = session.query(DagModel.dag_id).filter(DagModel.is_paused == False).all()
     return [dag.dag_id for dag in unpaused_dags]
 
 def get_dag_structure(dag_ids):
@@ -56,7 +57,7 @@ class PauseRunningDagsPlugin(AppBuilderBaseView):
     @expose("/")
     @csrf.exempt
     def pause_running_dags(self):
-        paused_dags = Variable.get(PAUSE_RUNNING_DAGS_VAR_KEY, deserialize_json=True, default=None)
+        paused_dags = Variable.get(PAUSE_RUNNING_DAGS_VAR_KEY, deserialize_json=True, default_var=None)
         unpaused_dags = get_unpaused_dags()
         content = {
             "paused_dags": paused_dags,
@@ -67,34 +68,36 @@ class PauseRunningDagsPlugin(AppBuilderBaseView):
 
     @expose("/pause", methods=['POST'])
     @csrf.exempt
-    def pause_dags(self):
+    @provide_session
+    def pause_dags(self, session=None):
         try:
-            unpaused_dags = get_unpaused_dags()
-            with Session() as session:
-                for dag_id in unpaused_dags:
-                    dag = session.query(DagModel).filter(DagModel.dag_id == dag_id).first()
-                    if dag:
-                        dag.is_paused = True
-                session.commit()
+            unpaused_dags = get_unpaused_dags(session=session)
+            for dag_id in unpaused_dags:
+                dag = session.query(DagModel).filter(DagModel.dag_id == dag_id).first()
+                if dag:
+                    dag.is_paused = True
+            session.commit()
             Variable.set(PAUSE_RUNNING_DAGS_VAR_KEY, json.dumps(unpaused_dags))
             return jsonify({"status": "success", "message": "All unpaused DAGs have been paused and preserved"})
         except Exception as e:
+            session.rollback()
             return jsonify({"status": "error", "message": str(e)})
 
     @expose("/unpause", methods=['POST'])
     @csrf.exempt
-    def unpause_dags(self):
+    @provide_session
+    def unpause_dags(self, session=None):
         try:
-            paused_dags = Variable.get(PAUSE_RUNNING_DAGS_VAR_KEY, deserialize_json=True, default=[])
-            with Session() as session:
-                for dag_id in paused_dags:
-                    dag = session.query(DagModel).filter(DagModel.dag_id == dag_id).first()
-                    if dag:
-                        dag.is_paused = False
-                session.commit()
+            paused_dags = Variable.get(PAUSE_RUNNING_DAGS_VAR_KEY, deserialize_json=True, default_var=[])
+            for dag_id in paused_dags:
+                dag = session.query(DagModel).filter(DagModel.dag_id == dag_id).first()
+                if dag:
+                    dag.is_paused = False
+            session.commit()
             Variable.delete(PAUSE_RUNNING_DAGS_VAR_KEY)
             return jsonify({"status": "success", "message": "All preserved DAGs have been unpaused"})
         except Exception as e:
+            session.rollback()
             return jsonify({"status": "error", "message": str(e)})
 
 v_appbuilder_view = PauseRunningDagsPlugin()
