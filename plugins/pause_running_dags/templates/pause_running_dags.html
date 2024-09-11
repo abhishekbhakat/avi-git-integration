@@ -3,24 +3,33 @@
 {% block title %}Pause Running DAGs{% endblock %}
 
 {% block content %}
-<h2>Running DAGs</h2>
-<ul id="running-dags-list">
-    {% for dag_id in content.running_dags %}
-    <li>
-        {{ dag_id }}
-        <button onclick="pauseDAG('{{ dag_id }}')">Pause</button>
-    </li>
+<h2>Pause Running DAGs</h2>
+
+{% if content.paused_dags %}
+    <button onclick="unpauseDags()">Unpause Preserved DAGs</button>
+    <h3>Preserved DAGs:</h3>
+    <ul>
+    {% for dag_id in content.paused_dags %}
+        <li><a href="{{ url_for('Airflow.graph', dag_id=dag_id) }}">{{ dag_id }}</a></li>
     {% endfor %}
-</ul>
+    </ul>
+{% else %}
+    <button onclick="pauseDags()">Pause Unpaused DAGs</button>
+    <p><strong>Note:</strong> This action will pause all currently unpaused DAGs and preserve their state. New DAGs added after this action will not be affected.</p>
+    
+    <h3>Unpaused DAGs:</h3>
+    <div id="dag-structure">
+        {{ render_dag_structure(content.dag_structure) | safe }}
+    </div>
+{% endif %}
 
 <script>
-function pauseDAG(dagId) {
+function pauseDags() {
     fetch('/pause_running_dags/pause', {
         method: 'POST',
         headers: {
-            'Content-Type': 'application/x-www-form-urlencoded',
+            'Content-Type': 'application/json',
         },
-        body: 'dag_id=' + encodeURIComponent(dagId)
     })
     .then(response => response.json())
     .then(data => {
@@ -33,8 +42,50 @@ function pauseDAG(dagId) {
     })
     .catch((error) => {
         console.error('Error:', error);
-        alert('An error occurred while pausing the DAG');
+        alert('An error occurred while pausing the DAGs');
+    });
+}
+
+function unpauseDags() {
+    fetch('/pause_running_dags/unpause', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.status === 'success') {
+            alert(data.message);
+            location.reload();
+        } else {
+            alert('Error: ' + data.message);
+        }
+    })
+    .catch((error) => {
+        console.error('Error:', error);
+        alert('An error occurred while unpausing the DAGs');
     });
 }
 </script>
 {% endblock %}
+
+{% macro render_dag_structure(structure, indent=0) %}
+    <ul style="list-style-type: none; padding-left: {{ indent * 20 }}px;">
+    {% for key, value in structure.items() %}
+        <li>
+            {% if 'dags' in value %}
+                <strong>{{ key }}</strong>
+                <ul>
+                {% for dag_id in value['dags'] %}
+                    <li><a href="{{ url_for('Airflow.graph', dag_id=dag_id) }}">{{ dag_id }}</a></li>
+                {% endfor %}
+                </ul>
+            {% else %}
+                <strong>{{ key }}</strong>
+                {{ render_dag_structure(value, indent + 1) | safe }}
+            {% endif %}
+        </li>
+    {% endfor %}
+    </ul>
+{% endmacro %}
