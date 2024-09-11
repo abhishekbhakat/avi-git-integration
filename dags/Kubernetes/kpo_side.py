@@ -1,15 +1,43 @@
 from airflow.decorators import dag
 from airflow.providers.cncf.kubernetes.operators.kubernetes_pod import KubernetesPodOperator
-from pendulum import datetime
 from kubernetes.client import models as k8s
-# dummy change
+from pendulum import datetime
 
+# dummy change
+custom_resource = k8s.V1ResourceRequirements(
+        requests={
+            "cpu": 0.5,
+            "memory": "500Mi",
+            "ephemeral-storage": "1Gi"
+        },
+        limits={
+            "cpu": 0.5,
+            "memory": "500Mi",
+            "ephemeral-storage": "1Gi"
+        }
+    )
+
+default_args = {
+    "executor_config": {
+            "pod_override": k8s.V1Pod(
+                spec=k8s.V1PodSpec(
+                    containers=[
+                        k8s.V1Container(
+                            name="base",
+                            resources=custom_resource,
+                        )
+                    ]
+                )
+            ),
+        }
+}
 # Define your DAG
 @dag(
     'example_kubernetes_pod',
     schedule=None,
     start_date=datetime(2024, 5, 1),
     tags=['example'],
+    default_args=default_args,
 )
 def example_kubernetes_pod():
     # Define a volume shared between the main and sidecar containers
