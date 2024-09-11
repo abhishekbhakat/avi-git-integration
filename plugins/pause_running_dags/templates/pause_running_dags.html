@@ -72,6 +72,11 @@
     </style>
 
     <h1>Pause Running DAGs</h1>
+    <div class="alert alert-info" role="alert">
+        <p><strong>Note:</strong> This feature will only pause DAGs that are currently active, meaning they have a corresponding DAG file in the DAGs folder and are currently unpaused.</p>
+        <p>After pausing the DAGs, any new DAGs added to the system will not be affected by this action.</p>
+        <p>When resuming, only the preserved DAG IDs will be resumed.</p>
+    </div>
     <div class="dag-directory-container">
         {% if content.paused_dags %}
             <button class="action-button" onclick="unpauseDags()">Unpause Preserved DAGs</button>
