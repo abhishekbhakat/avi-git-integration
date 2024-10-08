@@ -7,3 +7,5 @@ logs/
 airflow.db
 airflow.cfg
 archive
+SENSITIVE/
+.aider*

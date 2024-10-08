@@ -11,3 +11,5 @@ airflow.cfg
 airflow.db
 archive
 MAILER/
+.aider*
+SENSITIVE/
