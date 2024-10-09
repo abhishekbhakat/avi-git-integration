@@ -1,6 +1,3 @@
-from typing import TYPE_CHECKING
-
-
 from airflow.policies import hookimpl
 from airflow.models import Log
 from airflow import settings
@@ -31,7 +28,7 @@ def task_instance_mutation_hook(task_instance: TaskInstance):
 
     user = get_user()
     user_list = ['user1', 'user2']
-    # instead of user_list make Astro API call to fetch users allowed to run the task by custom roles or which way suitable.
+    # instead of user_list implement any method to get the authorized users.
     if user not in user_list:
         print(f"User {user} is not allowed to run this task")
         task_instance.state = 'skipped'
