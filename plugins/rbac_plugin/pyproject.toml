@@ -1,0 +1,11 @@
+[build-system]
+requires = ["setuptools", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "rbac-plugin"
+version = "0.0.1"
+
+dependencies = ["apache-airflow>=2.6"]
+[project.entry-points.'airflow.policy']
+_ = 'rbac_plugin.policies'
