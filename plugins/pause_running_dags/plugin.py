@@ -105,7 +105,7 @@ class PauseRunningDagsView(AppBuilderBaseView):
 
 
 v_appbuilder_view = PauseRunningDagsView()
-v_appbuilder_package = {"name": "Pause Running DAGs", "category": "", "view": v_appbuilder_view}
+v_appbuilder_package = {"name": "Pause Running DAGs", "category": "Custom Plugins", "view": v_appbuilder_view}
 
 
 class PauseRunningDagsPlugin(AirflowPlugin):

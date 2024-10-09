@@ -62,7 +62,7 @@ class MaintenanceModeView(AppBuilderBaseView):
 
 
 v_appbuilder_view = MaintenanceModeView()
-v_appbuilder_package = {"name": "Maintenance Mode", "category": "Admin", "view": v_appbuilder_view}
+v_appbuilder_package = {"name": "Maintenance Mode", "category": "Custom Plugins", "view": v_appbuilder_view}
 
 
 class MaintenanceModePlugin(AirflowPlugin):

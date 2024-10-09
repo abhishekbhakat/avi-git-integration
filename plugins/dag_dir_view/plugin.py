@@ -55,7 +55,7 @@ class DagDirViewPlugin(AppBuilderBaseView):
         return self.render_template("dag_dir_view.html", content=content)
 
 v_appbuilder_view = DagDirViewPlugin()
-v_appbuilder_package = {"name": "Dag Dir View", "category": "", "view": v_appbuilder_view}
+v_appbuilder_package = {"name": "Dag Dir View", "category": "Custom Plugins", "view": v_appbuilder_view}
 
 class DagDirViewPlugin(AirflowPlugin):
     name = "DagDirViewPlugin"
