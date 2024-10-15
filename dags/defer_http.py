@@ -21,7 +21,8 @@ with DAG(
         endpoint='api/v1/data',
         headers={"Content-Type": "application/json"},
         log_response=True,
-        deferrable=True  # Enable deferrable
+        deferrable=True,  # Enable deferrable
+        response_check=lambda response: response.json()['status'] != 'processing',
     )
 
 fetch_data
