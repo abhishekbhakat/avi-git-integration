@@ -32,6 +32,7 @@ with DAG(
         endpoint='api/v1/data',
         poke_interval=5,
         response_check=lambda response: response.status_code == 200,
+        deferrable= True,  # Enable deferrable
     )
 
 fetch_data
