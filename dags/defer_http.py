@@ -33,6 +33,7 @@ with DAG(
         poke_interval=5,
         response_check=lambda response: response.status_code == 200,
         deferrable= True,  # Enable deferrable
+        mode='reschedule'
     )
 
 fetch_data
