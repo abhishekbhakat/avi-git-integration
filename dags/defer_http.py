@@ -30,10 +30,10 @@ with DAG(
         task_id='fetch_sensor',
         http_conn_id='my_http_conn',
         endpoint='api/v1/data',
-        poke_interval=20,
+        poke_interval=5,
         response_check=lambda response: response.status_code == 200,
         deferrable= True,  # Enable deferrable
-        mode='poke'
+        mode='reschedule'
     )
 
 fetch_data
