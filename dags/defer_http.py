@@ -1,5 +1,5 @@
 from airflow import DAG
-from airflow.providers.http.operators.http import SimpleHttpOperator
+from airflow.providers.http.operators.http import HttpOperator
 from datetime import datetime, timedelta
 
 default_args = {
@@ -14,7 +14,7 @@ with DAG(
     catchup=False,
 ) as dag:
 
-    fetch_data = SimpleHttpOperator(
+    fetch_data = HttpOperator(
         task_id='fetch_data',
         method='GET',
         http_conn_id='my_http_conn',
