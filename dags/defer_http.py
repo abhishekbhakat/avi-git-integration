@@ -23,7 +23,7 @@ with DAG(
         headers={"Content-Type": "application/json"},
         log_response=True,
         deferrable=True,  # Enable deferrable
-        # response_check=lambda response: response.status_code == 200,
+        response_check=lambda response: response.status_code == 200,
     )
 
     fetch_sensor = HttpSensor(
@@ -31,9 +31,7 @@ with DAG(
         http_conn_id='my_http_conn',
         endpoint='api/v1/data',
         poke_interval=5,
-        response_check=lambda response: response.status_code == 200,
-        deferrable= True,  # Enable deferrable
-        mode='reschedule'
+        deferrable = True,  # Enable deferrable
     )
 
 fetch_data
