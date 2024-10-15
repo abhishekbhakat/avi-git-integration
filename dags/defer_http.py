@@ -23,7 +23,7 @@ with DAG(
         headers={"Content-Type": "application/json"},
         log_response=True,
         deferrable=True,  # Enable deferrable
-        response_check=lambda response: response.status_code == 200,
+        # response_check=lambda response: response.status_code == 200,
     )
 
     fetch_sensor = HttpSensor(
