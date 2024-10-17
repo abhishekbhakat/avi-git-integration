@@ -1,6 +1,7 @@
 from airflow.decorators import task, dag
 from airflow.operators.bash import BashOperator
 from datetime import datetime
+from airflow.models import Variable
 import json
 
 @dag(
@@ -14,6 +15,13 @@ def expose_env():
         task_id='print_env',
         bash_command='env',
     )
+
+    @task(
+        't2',
+    )
+    def t2():
+        var = Variable.get('test_var_qwerty', deserialize_json=True)
+        print(var)
     
     
 dg_basic = expose_env()
