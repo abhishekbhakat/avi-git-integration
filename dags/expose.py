@@ -17,11 +17,12 @@ def expose_env():
     )
 
     @task(
-        't2',
     )
     def t2():
         var = Variable.get('test_var_qwerty', deserialize_json=True)
         print(var)
+    
+    t2_obj = t2()
     
     
 dg_basic = expose_env()
