@@ -6,7 +6,10 @@ import json
     'try_context_eg',
     start_date=datetime(2024, 4, 1),
     catchup=False,
-    schedule=None
+    schedule=None,
+    default_args={
+        "retries": 1,
+    }
 )
 def try_context_eg():
 
